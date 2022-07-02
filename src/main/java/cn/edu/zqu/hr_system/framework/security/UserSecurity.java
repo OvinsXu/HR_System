@@ -1,9 +1,12 @@
 package cn.edu.zqu.hr_system.framework.security;
 
-import cn.edu.zqu.hr_system.project.mapper.RoleMapper;
-import cn.edu.zqu.hr_system.project.model.entities.RoleEntity;
-import cn.edu.zqu.hr_system.project.model.entities.UserEntity;
-import cn.edu.zqu.hr_system.project.service.impl.UserServiceImpl;
+
+import cn.edu.zqu.hr_system.project.model.entities.Role;
+import cn.edu.zqu.hr_system.project.model.entities.User;
+import cn.edu.zqu.hr_system.project.model.entities.UserRole;
+import cn.edu.zqu.hr_system.project.service.RoleService;
+import cn.edu.zqu.hr_system.project.service.UserRoleService;
+import cn.edu.zqu.hr_system.project.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,25 +22,39 @@ import java.util.List;
 public class UserSecurity implements UserDetailsService {
 
   @Autowired
-  private UserServiceImpl userService;
+  private UserService userService;
+
   @Autowired
-  private RoleMapper roleMapper;
+  private RoleService roleService;
+
+  @Autowired
+  private UserRoleService userRoleService;
 
   @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    //mybatis plus不直接支持多表查询,下面是一种解决方案,另一种是写mybatis xml
-    UserEntity user = this.userService.findUserByEmail(email);
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+
+    //mybatis plus不直接支持多表查询,下面是一种解决方案,即手动查询两次,另一种是写mybatis xml
+    //多表查询会增加复杂度,三张表以上的联合查询再写xml
+    User user = userService.getOneByUsername(username);
     if (user == null) {
       throw new UsernameNotFoundException("用户名不存在");
     }
     List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-    QueryWrapper<RoleEntity> wrapperRole = new QueryWrapper<>();
-    wrapperRole.eq("id", user.getRoleId());
-    RoleEntity roleEntity = roleMapper.selectOne(wrapperRole);
-    authorities.add(new SimpleGrantedAuthority(roleEntity.getName()));
+    QueryWrapper<UserRole> wrapper = new QueryWrapper<>();
+    wrapper.eq("uid", user.getId());
+    //wrapper.eq("status", 'Y');
+    List<UserRole> userRolesList = userRoleService.list(wrapper);
 
-    return new org.springframework.security.core.userdetails.User(user.getEmail(),
-            user.getPassword(), authorities);
+    for (UserRole userRole : userRolesList) {
+      Role role = roleService.getById(userRole.getRid());
+      //System.out.println(role);
+      authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getCode()));
+      //System.out.println(authorities);
+    }
+
+    return new UserInfo(user.getUsername(),
+            user.getPassword(), user.getId(), authorities);
   }
 }

@@ -1,20 +1,8 @@
 package cn.edu.zqu.hr_system.project.service;
 
-import cn.edu.zqu.hr_system.project.model.entities.RoleEntity;
+import cn.edu.zqu.hr_system.project.model.entities.Role;
+import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
 
-public interface RoleService {
-
-  int createRole(RoleEntity role);
-
-  int deleteRole(Long rid);
-
-  RoleEntity findRoleById(Long rid);
-
-  RoleEntity findRoleByName(String name);
-
-  List<RoleEntity> findRoleByRecruit(String recruit);
-
-  int update(RoleEntity role);
+public interface RoleService extends IService<Role> {
 }

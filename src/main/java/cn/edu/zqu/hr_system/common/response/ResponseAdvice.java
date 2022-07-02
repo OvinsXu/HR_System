@@ -25,13 +25,13 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
   @SneakyThrows
   @Override
   public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-    if (o instanceof String) {//返回字符串,需要进行包装
+    if (o instanceof String) {//字符串包装成对象
       return objectMapper.writeValueAsString(ResultData.success(o));
 
     }
-    if (o instanceof ResultData) {
+    if (o instanceof ResultData) {//已经包装
       return o;
     }
-    return ResultData.success(o);
+    return ResultData.success(o);//对象
   }
 }

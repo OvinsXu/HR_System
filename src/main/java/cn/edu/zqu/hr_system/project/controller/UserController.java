@@ -2,20 +2,27 @@ package cn.edu.zqu.hr_system.project.controller;
 
 import cn.edu.zqu.hr_system.common.response.ResultData;
 import cn.edu.zqu.hr_system.project.base.BaseController;
-import cn.edu.zqu.hr_system.project.model.entities.UserEntity;
-import cn.edu.zqu.hr_system.project.model.params.User.CreateUserParam;
+import cn.edu.zqu.hr_system.project.model.entities.User;
+import cn.edu.zqu.hr_system.project.model.enums.ResultCode;
 import cn.edu.zqu.hr_system.project.model.params.User.LoginParam;
-import cn.edu.zqu.hr_system.project.service.UserService;
-import cn.edu.zqu.hr_system.project.utils.JwtUtil;
-import com.alibaba.fastjson.JSONObject;
+import cn.edu.zqu.hr_system.project.service.Impl.UserServiceImpl;
+import cn.edu.zqu.hr_system.project.utils.CryptoUtil;
+import cn.edu.zqu.hr_system.project.utils.JwtTokenUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -24,163 +31,135 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController extends BaseController {
   @Autowired
-  private UserService userService;
+  private UserServiceImpl userService;
 
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
+
+  @Autowired
+  private CryptoUtil cryptoUtil;
+
+  @Autowired
+  private HttpServletResponse httpServletResponse;
+  @Autowired
+  private HttpServletRequest httpServletRequest;
+
+  @Resource
+  private JwtTokenUtil jwtTokenUtil;
+
+  @Resource
+  private AuthenticationManager authenticationManager;
+  @Resource
+  private UserDetailsService userDetailsService;
+
+
   @ApiOperation("创建用户")
-  @PostMapping
-  public String createUser(@RequestBody @Valid CreateUserParam createUserParam) throws Exception {
-    return Result(userService.createUser(createUserParam));
+  @PostMapping("/")
+  public String createUser(@RequestBody User user) {
+
+    System.out.println(user);
+    user.setPassword(CryptoUtil.enCrypt(user.getPassword()));
+    return Result(userService.save(user));
   }
 
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-  @ApiOperation("硬删除用户")
-  @DeleteMapping("/{id}")
-  public String eraseUser(@PathVariable Long id) {
-    return Result(userService.eraseUserById(id));
+  @ApiOperation("删除用户")
+  @DeleteMapping("/{uid}")
+  public String eraseUser(@PathVariable Long uid) {
+    return Result(userService.removeById(uid));
   }
 
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-  @ApiOperation("硬删除用户列表")
-  @PostMapping("/deleteList")
-  public String eraseUsers(@RequestBody List<Long> userIds) {
-    return "硬删除了" + userService.eraseUserByIds(userIds) + "个条目!";
+
+  @ApiOperation("删除用户列表")
+  @PostMapping("/list")
+  public String eraseUsers(@RequestBody List<Long> uids) {
+    return Result(userService.removeBatchByIds(uids));
   }
 
-  //@PreAuthorize("hasAnyRole('Head')")
+
+  //@PreAuthorize("hasAnyRole('Owner')")
   @ApiOperation("用户查找")
-  @GetMapping("/{id}")
-  public UserEntity findOne(@PathVariable Long id) {
-    return userService.findUserById(id);
+  @GetMapping("/{uid}")
+  public User selectOne(@PathVariable Long uid) {
+    return userService.getById(uid);
   }
 
-  @PreAuthorize("hasAnyRole('Owner','Head')")
+  @ApiOperation("查找当前登录账号")
+  @GetMapping("/loginUser")
+  public User selectLoginOne(@RequestHeader(JwtTokenUtil.HEADER_STRING) String token) {
+    //System.out.println(token);
+    String username = jwtTokenUtil.getUsernameFromToken(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
+    return userService.getOneByUsername(username);
+  }
+
+  //@PreAuthorize("hasAnyRole('Owner')")
   @ApiOperation("用户列表")
-  @GetMapping
-  public List<UserEntity> findAll(HttpServletRequest request) {
-    //String username = JwtUtil.getUser(request);
-    //System.out.println(username);
-    return userService.findAll();
+  @PostMapping("/list/{uids}")
+  public List<User> selectList(@RequestBody List<Long> uids) {
+    return userService.listByIds(uids);
+  }
+
+  //@PreAuthorize("hasAnyRole('Owner')")
+  @ApiOperation("所有用户")
+  @GetMapping("/")
+  public List<User> selectAll() {
+    return userService.list();
+  }
+
+  @ApiOperation("无条件分页查询")
+  @GetMapping("/page")
+  public Page<User> selectPage(@RequestParam int current, @RequestParam int size) {
+
+    Page<User> iPage = new Page<>(current, size);
+    return userService.page(iPage);
   }
 
   @ApiOperation("更改用户")
   @PutMapping("/")
-  public String update(UserEntity user) {
-    return Result(userService.updateUser(user));
+  public String update(@RequestBody User user) {
+    System.out.println(user);
+    return Result(userService.updateById(user));
   }
 
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-//  @ApiOperation("软删除用户")
-//  @PatchMapping("/del/{id}")
-//  public String deleteUser(@PathVariable Long id) {
-//
-//    return userService.deleteUserById(id) == 1 ? "软删除成功" : "软删除失败";
-//  }
-
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-//  @ApiOperation("软删除用户列表")
-//  @PatchMapping("/del")
-//  public String deleteUsers(@RequestBody List<Long> userIds) {
-//
-//    return userService.deleteUserByIds(userIds) == 1 ? "软删除列表成功" : "软删除列表失败";
-//  }
-
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-//  @ApiOperation("恢复软删除用户")
-//  @PatchMapping("/undel/{id}")
-//  public String unDeleteUser(@PathVariable Long id) {
-//    return userService.deleteUserById(id) == 1 ? "恢复软删除成功" : "恢复软删除失败";
-//  }
-
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-//  @ApiOperation("恢复软删除用户列表")
-//  @PatchMapping("/undel")
-//  public String unDeleteUsers(@RequestBody List<Long> userIds) {
-//
-//    return userService.deleteUserByIds(userIds) == 1 ? "恢复软删除列表成功" : "恢复软删除列表失败";
-//  }
-
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-//  @ApiOperation("更改登录邮箱")
-//  @PatchMapping("/email/{id}")
-//  public String patchUserEmail(@PathVariable Long id, @RequestBody String email) {
-//    UserEntity user = userService.findUserById(id);
-//    user.setEmail(email);
-//
-//    return userService.updateUser(user) == 1 ? "更新成功!" : "更新失败!";
-//  }
-
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-//  @ApiOperation("更改密码")
-//  @PatchMapping("/pwd/{id}")
-//  public String patchUserPassword(@PathVariable Long id, @RequestBody String pwd) {
-//    UserEntity user = userService.findUserById(id);
-//    user.setPassword(pwd);
-//    return userService.updateUser(user) == 1 ? "更新成功!" : "更新失败!";
-//  }
-
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-//  @ApiOperation("更改岗位")
-//  @PatchMapping("/role/{id}")
-//  public String patchUserRole(@PathVariable Long id, @RequestBody Long role_id) {
-//    UserEntity user = userService.findUserById(id);
-//    user.setRoleId(role_id);
-//    return userService.updateUser(user) == 1 ? "更新成功!" : "更新失败!";
-//  }
-
-  /**
-   * 方法名：作用：登陆校验密码
-   * 输入 username password  用户名，密码
-   * 输出：code: 状态码   1 为认证成功 0 为用户不存在 -1 为密码不一致 -2 表示程序错误
-   * success:  true or false 执行成功或失败
-   * result：只在认证成功时返回，包含用户的全部信息
-   * messsage:
-   */
   @ApiOperation("登录")
   @ResponseBody
   @PostMapping("/login")
   public ResultData Login(@RequestBody @Valid LoginParam loginParam) {
-    System.out.println(loginParam.email);
-    JSONObject json = new JSONObject();
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    try {
-      UserEntity user = userService.findUserByEmail(loginParam.email);
-      System.out.println(user);
-      if (user != null) {
-        String dbPassWord = user.getPassword();
-        if (bCryptPasswordEncoder.matches(loginParam.password, dbPassWord)) {
-          //创建token
 
-          String token = JwtUtil.generateToken(loginParam.email);
+    //String ip = httpServletRequest.getRemoteAddr();
+    //String browser = httpServletRequest.getHeader("USER-AGENT");
+    //login_log(loginParam.username,ip,browser,);
 
-          return ResultData.success(token);
-//          json.put("success", true);
-//          json.put("code", 1);
-//          //json.put("result", user);
-//          json.put("time", new Date().toString());
-//          json.put("message", "登陆成功");
-//          json.put(JwtUtil.AUTHORIZATION, token);
-        } else {
-          return ResultData.fail(-1, "登陆失败,密码错误");
-//          json.put("success", false);
-//          json.put("code", -1);
-//          json.put("message", "登陆失败,密码错误");
-        }
-      } else {
-        return ResultData.fail(0, "无此用户信息");
-//        json.put("success", false);
-//        json.put("code", 0);
-//        json.put("message", "无此用户信息");
+    User user = userService.getOneByUsername(loginParam.username);
+    //System.out.println(user);
+    if (user != null) {
+      if (CryptoUtil.matches(loginParam.password, user.getPassword())) {
+
+        //使用用户名密码进行登录验证
+        UsernamePasswordAuthenticationToken upToken =
+                new UsernamePasswordAuthenticationToken(loginParam.username, loginParam.password);
+        Authentication authentication = authenticationManager.authenticate(upToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //生成JWT
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginParam.username);
+
+        String token = jwtTokenUtil.generateToken(userDetails);
+        httpServletResponse.addHeader("Access-Control-Expose-Headers", JwtTokenUtil.HEADER_STRING);//浏览器默认不能访问一些自定义的项
+        httpServletResponse.addHeader(JwtTokenUtil.HEADER_STRING, token);
+
+
+        return ResultData.success(user);
       }
-    } catch (Exception e) {
-      return ResultData.fail(-2, e.getMessage());
-//      json.put("code", -2);
-//      json.put("success", false);
-//      json.put("message", e.getMessage());
-
     }
-    //return JSON.toJSONString(json);
+    return ResultData.sendCode(ResultCode.USERNAME_OR_PASSWORD_ERROR, "登陆失败,密码错误");
   }
 
+  void login_log(String username, String ip, String browser, String os) {//每次登录都进行登记
+    //根据ip查归属地
+    //http://whois.pconline.com.cn/ipJson.jsp?ip=192.168.1.1&json=true
+  }
+
+  @ApiOperation("刷新token")
+  @PostMapping(value = "/refreshtoken")
+  public ResultData refresh(@RequestHeader(JwtTokenUtil.HEADER_STRING) String token) {
+    return ResultData.success(jwtTokenUtil.refreshToken(token));
+  }
 
 }

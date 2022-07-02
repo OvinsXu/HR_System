@@ -34,5 +34,13 @@ public class ResultData<T> {
     return resultData;
   }
 
+  public static <T> ResultData<T> sendCode(ResultCode code, T data) {
+    ResultData<T> resultData = new ResultData<>();
+    resultData.setStatus(code.getCode());
+    resultData.setMessage(code.getMessage());
+    resultData.setData(data);
+    return resultData;
+  }
+
 
 }

@@ -6,12 +6,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CryptoUtil {
   //加密
-  public static String EnCrypt(String str) {
+  public static String enCrypt(String str) {
     return new BCryptPasswordEncoder().encode(str);
   }
 
   //解密
-  public static String DeCrypt(String str) {
+  public static String deCrypt(String str) {
     return "";
+  }
+
+  public static boolean matches(String str1, String str2) {
+    return new BCryptPasswordEncoder().matches(str1, str2);
   }
 }

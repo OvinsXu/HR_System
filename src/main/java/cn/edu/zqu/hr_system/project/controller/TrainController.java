@@ -1,17 +1,14 @@
 package cn.edu.zqu.hr_system.project.controller;
 
 import cn.edu.zqu.hr_system.project.base.BaseController;
-import cn.edu.zqu.hr_system.project.model.entities.TrainEntity;
-import cn.edu.zqu.hr_system.project.service.FileService;
+import cn.edu.zqu.hr_system.project.model.entities.Train;
 import cn.edu.zqu.hr_system.project.service.TrainService;
-import cn.edu.zqu.hr_system.project.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 
 @Api(tags = "培训计划管理")
@@ -21,41 +18,48 @@ public class TrainController extends BaseController {
   @Autowired
   private TrainService trainService;
 
-  @Autowired
-  private UserService userService;
 
-  @Autowired
-  private FileService fileService;
-
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-  @PostMapping("/pend")
-  public String createPend(@RequestParam MultipartFile file, Authentication authentication) {
-    Long uid = userService.findUserByEmail(authentication.getName()).getId();
-    return Result(trainService.createTrain(uid, file));
+  @ApiOperation("创建培训计划")
+  @PostMapping
+  public String createTrain(@RequestBody Train train) {
+    return Result(trainService.save(train));
   }
 
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-  @DeleteMapping("/pend/{id}")
-  public String deletePend(@RequestBody Long id) {
-    return Result(trainService.deleteTrain(id));
+  @ApiOperation("删除培训计划")
+  @DeleteMapping("/{id}")
+  public String deleteTrain(@PathVariable Long id) {
+    return Result(trainService.removeById(id));
   }
 
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-  @GetMapping("/pend/{id}")
-  public TrainEntity getPendById(@RequestParam Long id) {
-    return trainService.findTrain(id);
+  @ApiOperation("通过编号查找培训计划")
+  @GetMapping("/{id}")
+  public Train findTrainById(@PathVariable Long id) {
+    return trainService.getById(id);
   }
 
-  //@PreAuthorize("hasAnyRole('Owner','Head')")
-  @GetMapping("/pend/")
-  public List<TrainEntity> getPend() {
-    return trainService.findTrain();
+
+  @ApiOperation("无条件分页查询")
+  @GetMapping("/page")
+  public Page<Train> selectPage(@RequestParam int current, @RequestParam int size) {
+
+    Page<Train> iPage = new Page<>(current, size);
+    return trainService.page(iPage);
   }
 
-  @GetMapping("/download/{id}")
-  public void download(@RequestParam long id) {
-    fileService.downloadFile(id);
+  @ApiOperation("根据状态分页查询")
+  @GetMapping("/page/status")
+  public Page<Train> selectPageByStatus(@RequestParam int current, @RequestParam int size, @RequestParam char status) {
+    QueryWrapper<Train> queryWrapper = new QueryWrapper<>();
+    queryWrapper.eq("status", status);
+    Page<Train> iPage = new Page<>(current, size);
+    return trainService.page(iPage, queryWrapper);
   }
 
+
+  @ApiOperation("更改培训计划")
+  @PutMapping
+  public String updateTrain(@RequestBody Train train) {
+    return Result(trainService.updateById(train));
+  }
 
 }
