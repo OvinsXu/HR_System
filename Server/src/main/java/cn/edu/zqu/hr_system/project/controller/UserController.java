@@ -76,7 +76,6 @@ public class UserController extends BaseController {
   @ApiOperation("查找当前登录账号")
   @GetMapping("/loginUser")
   public User selectLoginOne(@RequestHeader(JwtTokenUtil.HEADER_STRING) String token) {
-    //System.out.println(token);
     String username = jwtTokenUtil.getUsernameFromToken(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
     return userService.getOneByUsername(username);
   }
