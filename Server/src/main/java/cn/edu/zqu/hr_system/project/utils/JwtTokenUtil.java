@@ -12,11 +12,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Data
 @Component
 public class JwtTokenUtil implements Serializable {
-
 
   public final static String SECRET = "xuweitaoliaoyuanlongwujiaru";
 
@@ -26,6 +24,17 @@ public class JwtTokenUtil implements Serializable {
 
   public final static String TOKEN_PREFIX = "Bearer ";
 
+  /**
+   * 从claims生成令牌
+   *
+   * @param claims 数据声明
+   * @return 令牌
+   */
+  private String generateToken(Map<String, Object> claims) {
+    Date expirationDate = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
+    return Jwts.builder().setClaims(claims).setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, SECRET)
+        .compact();
+  }
 
   /**
    * 生成token令牌
@@ -38,40 +47,6 @@ public class JwtTokenUtil implements Serializable {
     claims.put("sub", userDetails.getUsername());
     claims.put("created", new Date());
     return TOKEN_PREFIX + generateToken(claims);
-  }
-
-  /**
-   * 从令牌中获取用户名
-   *
-   * @param token 令牌
-   * @return 用户名
-   */
-  public String getUsernameFromToken(String token) {
-
-    String username;
-    try {
-      Claims claims = getClaimsFromToken(token);
-      username = claims.getSubject();
-    } catch (Exception e) {
-      username = null;
-    }
-    return username;
-  }
-
-  /**
-   * 判断令牌是否过期
-   *
-   * @param token 令牌
-   * @return 是否过期
-   */
-  public Boolean isTokenExpired(String token) {
-    try {
-      Claims claims = getClaimsFromToken(token);
-      Date expiration = claims.getExpiration();
-      return expiration.before(new Date());
-    } catch (Exception e) {
-      return false;
-    }
   }
 
   /**
@@ -93,6 +68,22 @@ public class JwtTokenUtil implements Serializable {
   }
 
   /**
+   * 判断令牌是否过期
+   *
+   * @param token 令牌
+   * @return 是否过期
+   */
+  public Boolean isTokenExpired(String token) {
+    try {
+      Claims claims = getClaimsFromToken(token);
+      Date expiration = claims.getExpiration();
+      return expiration.before(new Date());
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  /**
    * 验证令牌
    *
    * @param token       令牌
@@ -102,18 +93,6 @@ public class JwtTokenUtil implements Serializable {
   public Boolean validateToken(String token, UserDetails userDetails) {
     String username = getUsernameFromToken(token);
     return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-  }
-
-
-  /**
-   * 从claims生成令牌,如果看不懂就看谁调用它
-   *
-   * @param claims 数据声明
-   * @return 令牌
-   */
-  private String generateToken(Map<String, Object> claims) {
-    Date expirationDate = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
-    return Jwts.builder().setClaims(claims).setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, SECRET).compact();
   }
 
   /**
@@ -130,5 +109,23 @@ public class JwtTokenUtil implements Serializable {
       claims = null;
     }
     return claims;
+  }
+
+  /**
+   * 从令牌中获取用户名
+   *
+   * @param token 令牌
+   * @return 用户名
+   */
+  public String getUsernameFromToken(String token) {
+
+    String username;
+    try {
+      Claims claims = getClaimsFromToken(token);
+      username = claims.getSubject();
+    } catch (Exception e) {
+      username = null;
+    }
+    return username;
   }
 }
