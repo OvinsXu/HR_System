@@ -22,7 +22,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
@@ -35,11 +34,9 @@ public class UserController extends BaseController {
   @Autowired
   private UserServiceImpl userService;
   @Autowired
-  private CryptoUtil cryptoUtil;
-  @Autowired
   private HttpServletResponse httpServletResponse;
-  @Autowired
-  private HttpServletRequest httpServletRequest;
+  //@Autowired
+  //private HttpServletRequest httpServletRequest;
   @Resource
   private JwtTokenUtil jwtTokenUtil;
   @Resource
@@ -55,42 +52,49 @@ public class UserController extends BaseController {
     user.setPassword(CryptoUtil.enCrypt(user.getPassword()));
     return Result(userService.save(user));
   }
+
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("删除用户")
   @DeleteMapping("/{uid}")
   public String eraseUser(@PathVariable Long uid) {
     return Result(userService.removeById(uid));
   }
+
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("删除用户列表")
   @PostMapping("/list")
   public String eraseUsers(@RequestBody List<Long> uids) {
     return Result(userService.removeBatchByIds(uids));
   }
+
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("用户查找")
   @GetMapping("/{uid}")
   public User selectOne(@PathVariable Long uid) {
     return userService.getById(uid);
   }
+
   @ApiOperation("查找当前登录账号")
   @GetMapping("/loginUser")
   public User selectLoginOne(@RequestHeader(JwtTokenUtil.HEADER_STRING) String token) {
     String username = jwtTokenUtil.getUsernameFromToken(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
     return userService.getOneByUsername(username);
   }
+
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("用户列表")
   @PostMapping("/list/{uids}")
   public List<User> selectList(@RequestBody List<Long> uids) {
     return userService.listByIds(uids);
   }
+
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("所有用户")
   @GetMapping("/")
   public List<User> selectAll() {
     return userService.list();
   }
+
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("无条件分页查询")
   @GetMapping("/page")
@@ -99,6 +103,7 @@ public class UserController extends BaseController {
     Page<User> iPage = new Page<>(current, size);
     return userService.page(iPage);
   }
+
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("更改用户")
   @PutMapping("/")
@@ -106,15 +111,14 @@ public class UserController extends BaseController {
     System.out.println(user);
     return Result(userService.updateById(user));
   }
+
   @ApiOperation("登录")
   @ResponseBody
   @PostMapping("/login")
-  public ResultData Login(@RequestBody @Valid LoginParam loginParam) {
-    //String ip = httpServletRequest.getRemoteAddr();
-    //String browser = httpServletRequest.getHeader("USER-AGENT");
-    //login_log(loginParam.username,ip,browser,);
+  public ResultData<Object> Login(@RequestBody @Valid LoginParam loginParam) {
+
     User user = userService.getOneByUsername(loginParam.username);
-    //System.out.println(user);
+
     if (user != null) {
       if (CryptoUtil.matches(loginParam.password, user.getPassword())) {
 
@@ -130,21 +134,23 @@ public class UserController extends BaseController {
         httpServletResponse.addHeader("Access-Control-Expose-Headers", JwtTokenUtil.HEADER_STRING);//浏览器默认不能访问一些自定义的项
         httpServletResponse.addHeader(JwtTokenUtil.HEADER_STRING, token);
 
-
         return ResultData.success(user);
       }
     }
     return ResultData.sendCode(ResultCode.USERNAME_OR_PASSWORD_ERROR, "登陆失败,密码错误");
   }
-
-  void login_log(String username, String ip, String browser, String os) {//每次登录都进行登记
-    //根据ip查归属地
-    //http://whois.pconline.com.cn/ipJson.jsp?ip=192.168.1.1&json=true
-  }
+  //todo:添加登录日志
+  //void login_log(String username, String ip, String browser, String os) {//每次登录都进行登记
+  //String ip = httpServletRequest.getRemoteAddr();
+  //String browser = httpServletRequest.getHeader("USER-AGENT");
+  //login_log(loginParam.username,ip,browser,);
+  //根据ip查归属地
+  //http://whois.pconline.com.cn/ipJson.jsp?ip=192.168.1.1&json=true
+  //}
 
   @ApiOperation("刷新token")
   @PostMapping(value = "/refreshtoken")
-  public ResultData refresh(@RequestHeader(JwtTokenUtil.HEADER_STRING) String token) {
+  public ResultData<Object> refresh(@RequestHeader(JwtTokenUtil.HEADER_STRING) String token) {
     return ResultData.success(jwtTokenUtil.refreshToken(token));
   }
 
