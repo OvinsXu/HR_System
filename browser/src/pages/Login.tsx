@@ -4,14 +4,13 @@ import {useNavigate} from "react-router-dom";
 
 import {Login} from "../views/user/api";
 import {ILogin} from "../views/user/model";
-import {useDispatch} from "react-redux";
-import {setUserInfo} from "../views/user/userSlice";
+
+import notification, { NotificationPlacement } from 'antd/lib/notification';
+
 
 
 const App = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
 
   const onFinish = async (param: ILogin) => {
     const res = await Login(param.username, param.password);
@@ -22,16 +21,29 @@ const App = () => {
         localStorage.setItem("token", sessionStorage.getItem("token")!);
       }
       navigate("/");
+    }else{
+      openNotification('top')
     }
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-
+  //通知框,使用Hook
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement: NotificationPlacement) => {
+    api.error({
+      message: `登录失败!`,
+      description:
+        '账号或密码错误,请重新输入!',
+      placement,
+      duration:1
+    });
+  }
 
   return (
     <>
+      {contextHolder}
       <Row style={{paddingTop: '100px'}}>
         <Col span={8}></Col>
         <Col span={8}>
@@ -41,6 +53,7 @@ const App = () => {
       <Row>
         <Col span={8}></Col>
         <Col span={8}>
+
           <Form name="basic" labelCol={{span: 8,}} wrapperCol={{span: 8,}} initialValues={{remember: false,}} onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
             <Form.Item label="账号" name="username" rules={[{required: true, message: '请输入登录账号!',},]}>
               <Input/>
