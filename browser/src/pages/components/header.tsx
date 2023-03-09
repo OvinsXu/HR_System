@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import {Menu} from "antd";
 import {Header} from "antd/es/layout/layout";
 import {useDispatch} from 'react-redux';
-import {setIndex} from '../homeSlice'
+import {setIndex} from '../../store/features/homeSlice'
 import {ProfileOutlined, ReconciliationOutlined, VerifiedOutlined,SettingOutlined} from "@ant-design/icons";
 
 const App: FC = () => {

@@ -2,7 +2,7 @@ import React, {FC, useEffect} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
 import {Content} from "antd/lib/layout/layout";
 import {useSelector} from "react-redux";
-import {RootState} from "../../app/store";
+import {RootState} from "../../store/store";
 
 const App:FC=()=>{
   const { viewIndex } = useSelector((state:RootState) => state.home);

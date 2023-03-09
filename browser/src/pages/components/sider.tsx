@@ -10,7 +10,7 @@ import {
   ProjectOutlined,
 
 } from "@ant-design/icons";
-import {setIndex} from "../homeSlice";
+import {setIndex} from "../../store/features/homeSlice";
 import {useDispatch} from "react-redux";
 
 

@@ -19,7 +19,7 @@ import DeptDetail from "./components/deptDetail";
 
 import DeptAdd from "./components/deptAdd";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../../app/store";
+import {RootState} from "../../../store/store";
 import {setDepts} from "./deptSlice";
 
 

@@ -4,7 +4,7 @@ import {DownOutlined, SmileOutlined} from '@ant-design/icons';
 import {DeptItem} from "../deptModel";
 import {createDept} from "../deptApi";
 import {useSelector} from "react-redux";
-import {RootState} from "../../../../app/store";
+import {RootState} from "../../../../store/store";
 
 const App: FC = () => {
 

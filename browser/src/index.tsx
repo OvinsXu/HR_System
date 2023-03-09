@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {getLoginUser} from "./views/user/api";
 import {Provider} from "react-redux";
-import {store} from "./app/store";
+import {store} from "./store/store";
 import {setUserInfo} from "./views/user/userSlice";
 
 const root = ReactDOM.createRoot(
