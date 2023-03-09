@@ -1,5 +1,5 @@
-import React, {FC} from "react";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import React from "react";
+import {createBrowserRouter} from "react-router-dom";
 import Home from "../pages/Home";
 import System from "../views/system/System";
 import Department from "../views/system/dept/Dept";
@@ -16,59 +16,53 @@ import Auth from "../views/system/Auth";
 import FileSys from "../views/system/FileSys";
 import Transfer from "../views/transfer/Transfer";
 import AgreementMgr from "../views/agreement/AgreementMgr";
-
 import SkillMgr from "../views/skill/SkillMgr";
 import Attendance from "../views/attendance/Attendance";
 import BonusType from "../views/bonustype/BonusType";
 import Bonus from "../views/bonus/Bonus";
 import WageAdd from "../views/wage/WageAdd";
 
+const router = createBrowserRouter([
+    {path: "/login",element: <Login/>,},
+    {path: "/",element: <Home/>,
+      children: [
+        {path: "agreement",element: <AgreementMgr/>,},
+        {path: "skill",element: <SkillMgr/>,},
+        {path: "attendance",element: <Attendance/>,},
+        {path: "system",element: <System/>,
+          children: [
+            {path: "config", element: <Config/>,},
+            {path: "login_log", element: <LoginLog/>,},
+            {path: "opt_log", element: <OperateLog/>,},
+            {path: "department", element: <Department/>,},
+            {path: "auth", element: <Auth/>,},
+            {path: "file", element: <FileSys/>,},
+          ]
+        },
+        {path: "post",
+          children: [
+            {path: "mgr", element: <PostMgr/>,},
+            {path: "move", element: <Transfer/>,},
+          ],
+        },
+        {path: "user",
+          children: [
+            {path: "mgr", element: <UserMgr/>,},
+            {path: "add", element: <UserAdd/>,},
+          ],
+        },
+        {
+          path: "wage", children: [
+            {path: "bonustype", element: <BonusType/>,},
+            {path: "bonus", element: <Bonus/>,},
+            {path: "info", element: <WageInfo/>,},
+            {path: "add", element: <WageAdd/>,},
+          ],
+        },
+        {path: "train", element: <Train/>,},
+      ],
+    },
+  ])
+;
 
-const App:FC=()=>{
-  return (
-    <>
-      <Routes>
-        <Route path="login" element={<Login/>}/>
-        <Route path="/" element={<Home/>}>
-          {/*顶部*/}
-          <Route path="agreement" element={<AgreementMgr/>}/>
-          <Route path="skill" element={<SkillMgr/>}></Route>
-          <Route path="attendance" element={<Attendance/>}></Route>
-
-
-          <Route path="system">
-            <Route path=""  element={<System/>}></Route>
-
-            <Route path="config" element={<Config/>}></Route>
-            <Route path="login_log" element={<LoginLog/>}></Route>
-            <Route path="opt_log" element={<OperateLog/>}></Route>
-            <Route path="department" element={<Department/>}></Route>
-            <Route path="auth" element={<Auth/>}></Route>
-            <Route path="file" element={<FileSys/>}></Route>
-          </Route>
-
-          {/*侧边*/}
-          <Route path="post" >
-            <Route path="mgr" element={<PostMgr/>}></Route>
-            <Route path="move" element={<Transfer/>}></Route>
-          </Route>
-          <Route path="user">
-            <Route path="mgr" element={<UserMgr/>}></Route>
-            <Route path="add" element={<UserAdd/>}></Route>
-          </Route>
-          <Route path="wage">
-            <Route path="bonustype" element={<BonusType/>}></Route>
-            <Route path="bonus" element={<Bonus/>}></Route>
-            <Route path="info" element={<WageInfo/>}></Route>
-            <Route path="add" element={<WageAdd/>}></Route>
-          </Route>
-          <Route path="train" element={<Train />}></Route>
-
-
-        </Route>
-      </Routes>
-    </>
-  );
-}
-
-export default App;
+export default router;

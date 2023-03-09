@@ -38,7 +38,6 @@ const App:FC=()=>{
         padding: '0 24px',
       }}>
         <Outlet/>
-
       </Content>
     </>
   );

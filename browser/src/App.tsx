@@ -1,13 +1,20 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import {RouterProvider} from 'react-router-dom';
 import './App.css';
-import Router from "./app/router";
+import router from "./app/router";
+import {store} from "./store/store";
 
 
 const App = () => {
   return (
-    <div className="App">
-      <Router/>
-    </div>
+    <React.StrictMode>
+      <Provider store={store}>
+        <div className="App">
+          <RouterProvider router={router}/>
+        </div>
+      </Provider>
+    </React.StrictMode>
   );
 }
 export default App;

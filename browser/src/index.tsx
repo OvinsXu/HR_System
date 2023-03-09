@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {BrowserRouter, HashRouter} from "react-router-dom";
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import {getLoginUser} from "./views/user/api";
-import {Provider} from "react-redux";
+
 import {store} from "./store/store";
 import {setUserInfo} from "./views/user/userSlice";
 
@@ -20,25 +18,14 @@ if (localStorage.getItem("token") && !sessionStorage.getItem("token")) {
   getLoginUser().then((res) => {
     if (res.status === 100) {
       store.dispatch(setUserInfo(res.data))
-    }else{
+    } else {
       sessionStorage.removeItem("token");
       localStorage.removeItem("token");
     }
   });
 }
 
+root.render(<App/>);
 
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <HashRouter>
-        <App/>
-      </HashRouter>
-    </Provider>
-  </React.StrictMode>
-);
+// reportWebVitals(console.log);    //进行性能分析,将结果保存到console.log
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
