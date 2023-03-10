@@ -12,14 +12,14 @@ import {
   Typography
 } from "antd";
 import React, {FC, useEffect, useState} from "react";
-import {getUserPage, updateUser} from "./api";
+import {getUserPage, updateUser} from "../../api/user";
 import {UserItem} from "./model";
 
 import "../system/System.module.css"
 
 import moment from "moment";
 import {EditableCellProps, IPage} from "../common";
-import {getPostbyID, getPostList} from "../post/api";
+import {getPostbyID, getPostList} from "../../api/post";
 
 
 

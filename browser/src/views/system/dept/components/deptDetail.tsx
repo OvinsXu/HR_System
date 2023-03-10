@@ -1,7 +1,7 @@
 import {FC, useEffect, useState} from "react";
 import {DeptItem} from "../deptModel";
 import {Button, Col, Input, Row} from "antd";
-import {getUser} from "../../../user/api";
+import {getUser} from "../../../../api/user";
 
 interface propType {
   item: DeptItem;

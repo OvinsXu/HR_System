@@ -17,10 +17,10 @@ import {EditableCellProps, IPage} from "../common";
 
 
 import moment from "moment";
-import {createBonus, getBonusPage, updateBonus} from "./api";
+import {createBonus, getBonusPage, updateBonus} from "../../api/bonus";
 import {BonusItem} from "./model";
-import {getUserList} from "../user/api";
-import {getBonusTypeList} from "../bonustype/api";
+import {getUserList} from "../../api/user";
+import {getBonusTypeList} from "../../api/bounstype";
 
 
 

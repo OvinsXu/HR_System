@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import {getLoginUser} from "./views/user/api";
+import {getLoginUser} from "./api/user";
 
 import {store} from "./store/store";
 import {setUserInfo} from "./views/user/userSlice";

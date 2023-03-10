@@ -19,37 +19,22 @@ const App: FC = () => {
     {
       key: `10`,
       icon: React.createElement(AuditOutlined),
-      label: `岗位`,
-      children: [
-        {key: '11', label: "岗位管理"},
-        {key: '12', label: "调动申请"},
-      ]
+      label: `打卡`,
     },
     {
       key: `20`,
       icon: React.createElement(UserOutlined),
-      label: `用户`,
-      children: [
-
-        {key: '21', label: "用户管理"},
-        {key: '22', label: "录入新员"},
-      ]
+      label: `申请加班`,
     },
     {
       key: '30',
-      label: "工资",
+      label: "请假",
       icon: React.createElement(PayCircleOutlined),
-      children: [
-        {key: '31', label: "奖金类型"},
-        {key: '32', label: "奖金管理"},
-        {key: '33', label: "查看历史工资表"},
-        {key: '34', label: "生成工资表"},
-      ]
     },
 
     {
       key: '40',
-      label: "培训",
+      label: "外出办公",
       icon: React.createElement(ProjectOutlined)
     },
 

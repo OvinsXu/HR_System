@@ -17,9 +17,9 @@ import {EditableCellProps, IPage} from "../common";
 
 
 import moment from "moment";
-import {createAgreement, getAgreementPage, updateAgreement} from "./api";
+import {createAgreement, getAgreementPage, updateAgreement} from "../../api/agreement";
 import {AgreementItem} from "./model";
-import {getUserList} from "../user/api";
+import {getUserList} from "../../api/user";
 
 
 

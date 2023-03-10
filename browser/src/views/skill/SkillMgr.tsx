@@ -16,12 +16,12 @@ import React, {FC, useEffect, useState} from "react";
 
 import moment from "moment";
 import {IPage} from "../common";
-import {getPostbyID, getPostList} from "../post/api";
+import {getPostbyID, getPostList} from "../../api/post";
 
 import {EditableCellProps} from "../common";
 
-import {getUserList} from "../user/api";
-import {getSkillPage, updateSkill} from "./api";
+import {getUserList} from "../../api/user";
+import {getSkillPage, updateSkill} from "../../api/skill";
 import { SkillItem } from "./model";
 
 

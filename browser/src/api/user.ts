@@ -1,7 +1,7 @@
-import {ILogin, UserItem} from "./model";
+import {ILogin, UserItem} from "../views/user/model";
 
-import axiosInstance from "../../app/http";
-import {IPage} from "../common";
+import axiosInstance from "../app/http";
+import {IPage} from "../views/common";
 
 export const createUser = async (user: any) => {
   return await axiosInstance.post("/user/",user).then(res => res);

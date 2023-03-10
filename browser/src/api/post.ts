@@ -1,8 +1,8 @@
 // import {ILogin, UserItem} from "./user";
 //
- import axiosInstance from "../../app/http";
- import {IPage} from "../common";
-import {PostItem} from "./model";
+ import axiosInstance from "../app/http";
+ import {IPage} from "../views/common";
+import {PostItem} from "../views/post/model";
 //
 export const createPost = async (user: PostItem) => {
   return await axiosInstance.post("/post/",user).then(res => res);

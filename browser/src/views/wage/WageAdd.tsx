@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useState} from "react";
 import {Button, Cascader, Form, InputNumber, Pagination, PaginationProps, Select, Table} from "antd";
-import {getWagePageByTime, getWageTime} from "./api";
+import {getWagePageByTime, getWageTime} from "../../api/wage";
 import {WageItem} from "./model";
 import {IPage} from "../common";
-import {getAgreement, getAgreementList} from "../agreement/api";
+import {getAgreement, getAgreementList} from "../../api/agreement";
 
 interface Option {
   value: string | number;

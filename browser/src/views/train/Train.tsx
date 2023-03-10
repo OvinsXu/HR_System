@@ -61,9 +61,9 @@ import {EditableCellProps, IPage} from "../common";
 
 
 import moment from "moment";
-import {createTrain, getTrainPage, updateTrain} from "./api";
+import {createTrain, getTrainPage, updateTrain} from "../../api/train";
 import {TrainItem} from "./model";
-import {getUserList} from "../user/api";
+import {getUserList} from "../../api/user";
 
 
 

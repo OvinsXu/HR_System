@@ -14,7 +14,7 @@ import React, {FC, useEffect, useState} from "react";
 import "../system/System.module.css"
 
 import {IPage} from "../common";
-import {createPost, getPostPage, getPostPageByStatus, updatePost} from "./api";
+import {createPost, getPostPage, getPostPageByStatus, updatePost} from "../../api/post";
 import {PostItem} from "./model";
 import {EditableCellProps} from "../common";
 import {getDept} from "../system/dept/deptApi";

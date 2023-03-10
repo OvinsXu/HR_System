@@ -1,10 +1,10 @@
 import React, {FC, useEffect, useState} from "react";
 import {Button, Cascader, Form, InputNumber, Pagination, PaginationProps, Select, Table} from "antd";
-import {getAttendancePageByTime, getAttendanceTime} from "./api";
+import {getAttendancePageByTime, getAttendanceTime} from "../../api/attendance";
 import {AttendanceItem} from "./model";
 import {IPage} from "../common";
-import {getUserList} from "../user/api";
-import {getBonusTypeList} from "../bonustype/api";
+import {getUserList} from "../../api/user";
+import {getBonusTypeList} from "../../api/bounstype";
 
 interface Option {
   value: string | number;

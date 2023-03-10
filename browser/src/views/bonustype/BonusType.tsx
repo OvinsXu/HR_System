@@ -17,7 +17,7 @@ import {EditableCellProps, IPage} from "../common";
 
 
 import moment from "moment";
-import {createBonusType, getBonusTypePage, updateBonusType} from "./api";
+import {createBonusType, getBonusTypePage, updateBonusType} from "../../api/bounstype";
 import {BonusTypeItem} from "./model";
 
 

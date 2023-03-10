@@ -2,7 +2,7 @@ import React, {FC, useEffect} from "react";
 import {Layout} from "antd";
 
 import Sider from "./components/sider";
-import Header from "./components/header";
+import Header from "./components/header-hr";
 import Content from "./components/content";
 import Footer from "./components/footer";
 

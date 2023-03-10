@@ -17,12 +17,12 @@ import React, {FC, useEffect, useState} from "react";
 
 import moment from "moment";
 import {IPage} from "../common";
-import {getPostbyID, getPostList} from "../post/api";
+import {getPostbyID, getPostList} from "../../api/post";
 import {TransferItem} from "./model";
 import {EditableCellProps} from "../common";
-import {createTransfer, getTransferPage, updateTransfer} from "./api";
-import {getUserList} from "../user/api";
-import {createAgreement} from "../agreement/api";
+import {createTransfer, getTransferPage, updateTransfer} from "../../api/transfer";
+import {getUserList} from "../../api/user";
+import {createAgreement} from "../../api/agreement";
 
 
 

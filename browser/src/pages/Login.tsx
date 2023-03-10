@@ -2,7 +2,7 @@ import React from 'react';
 import {Form, Input, Button, Checkbox, Row, Col} from 'antd';
 import {useNavigate} from "react-router-dom";
 
-import {Login} from "../views/user/api";
+import {Login} from "../api/user";
 import {ILogin} from "../views/user/model";
 
 import notification, { NotificationPlacement } from 'antd/lib/notification';

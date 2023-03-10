@@ -1,8 +1,8 @@
 // import {ILogin, UserItem} from "./user";
 //
- import axiosInstance from "../../app/http";
- import {IPage} from "../common";
-import {TransferItem} from "./model";
+ import axiosInstance from "../app/http";
+ import {IPage} from "../views/common";
+import {TransferItem} from "../views/transfer/model";
 //
 export const createTransfer = async (user: TransferItem) => {
   return await axiosInstance.post("/transfer/",user).then(res => res);

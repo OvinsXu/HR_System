@@ -1,8 +1,8 @@
 // import {ILogin, UserItem} from "./user";
 //
- import axiosInstance from "../../app/http";
- import {IPage} from "../common";
-import {TrainItem} from "./model";
+ import axiosInstance from "../app/http";
+ import {IPage} from "../views/common";
+import {TrainItem} from "../views/train/model";
 //
 export const createTrain = async (user: TrainItem) => {
   return await axiosInstance.post("/train/",user).then(res => res);
