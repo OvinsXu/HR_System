@@ -1,6 +1,6 @@
 //分页参数
 import React from "react";
-import {UserItem} from "./user/model";
+import {UserItem} from "../model/user";
 
 export interface IPage {
   current: number;

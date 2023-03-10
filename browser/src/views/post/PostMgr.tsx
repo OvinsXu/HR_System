@@ -1,11 +1,13 @@
 import {
-  Button, Col,
+  Button,
+  Col,
   Form,
-  Input, InputNumber,
-
+  Input,
+  InputNumber,
   Pagination,
   PaginationProps,
-  Popconfirm, Row,
+  Popconfirm,
+  Row,
   Select,
   Table,
   Typography
@@ -13,10 +15,9 @@ import {
 import React, {FC, useEffect, useState} from "react";
 import "../system/System.module.css"
 
-import {IPage} from "../common";
+import {EditableCellProps, IPage} from "../common";
 import {createPost, getPostPage, getPostPageByStatus, updatePost} from "../../api/post";
-import {PostItem} from "./model";
-import {EditableCellProps} from "../common";
+import {PostItem} from "../../model/post";
 import {getDept} from "../system/dept/deptApi";
 import {DeptItem} from "../system/dept/deptModel";
 

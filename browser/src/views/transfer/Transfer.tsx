@@ -1,6 +1,5 @@
 import {
   Button,
-  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -8,7 +7,6 @@ import {
   PaginationProps,
   Popconfirm,
   Select,
-  Space,
   Table,
   Typography
 } from "antd";
@@ -16,15 +14,11 @@ import React, {FC, useEffect, useState} from "react";
 
 
 import moment from "moment";
-import {IPage} from "../common";
-import {getPostbyID, getPostList} from "../../api/post";
-import {TransferItem} from "./model";
-import {EditableCellProps} from "../common";
+import {EditableCellProps, IPage} from "../common";
+import {getPostList} from "../../api/post";
+import {TransferItem} from "../../model/transfer";
 import {createTransfer, getTransferPage, updateTransfer} from "../../api/transfer";
 import {getUserList} from "../../api/user";
-import {createAgreement} from "../../api/agreement";
-
-
 
 
 const App: FC = () => {

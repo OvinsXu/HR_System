@@ -1,14 +1,12 @@
 import React, {FC, useEffect, useState} from "react";
 import {
   Button,
-  Col,
   Form,
   Input,
   InputNumber,
   Pagination,
   PaginationProps,
   Popconfirm,
-  Row,
   Select,
   Table,
   Typography
@@ -18,8 +16,7 @@ import {EditableCellProps, IPage} from "../common";
 
 import moment from "moment";
 import {createBonusType, getBonusTypePage, updateBonusType} from "../../api/bounstype";
-import {BonusTypeItem} from "./model";
-
+import {BonusTypeItem} from "../../model/bounstype";
 
 
 const App: FC = () => {

@@ -1,27 +1,13 @@
 import React, {FC, useEffect, useState} from "react";
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Pagination,
-  PaginationProps,
-  Popconfirm,
-  Row,
-  Select,
-  Table,
-  Typography
-} from "antd";
+import {Button, Form, Input, InputNumber, Pagination, PaginationProps, Popconfirm, Table, Typography} from "antd";
 import {EditableCellProps, IPage} from "../common";
 
 
 import moment from "moment";
 import {createBonus, getBonusPage, updateBonus} from "../../api/bonus";
-import {BonusItem} from "./model";
+import {BonusItem} from "../../model/bouns";
 import {getUserList} from "../../api/user";
 import {getBonusTypeList} from "../../api/bounstype";
-
 
 
 const App: FC = () => {

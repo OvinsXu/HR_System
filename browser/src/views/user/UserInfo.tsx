@@ -1,8 +1,6 @@
-import React, {FC, useState} from "react";
+import React, {FC} from "react";
 import {Button} from "antd";
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../store/store";
 
 const App: FC = () => {
   const navigate = useNavigate();

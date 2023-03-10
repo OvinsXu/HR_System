@@ -1,8 +1,6 @@
-
-
 import axiosInstance from "../app/http";
 import {IPage} from "../views/common";
-import {AgreementItem} from "../views/agreement/model";
+import {AgreementItem} from "../model/agreement";
 
 export const createAgreement = async (agreement: any) => {
   return await axiosInstance.post("/agreement/",agreement).then(res => res);

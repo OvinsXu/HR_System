@@ -1,8 +1,6 @@
-
-
 import axiosInstance from "../app/http";
 import {IPage} from "../views/common";
-import {SkillItem} from "../views/skill/model";
+import {SkillItem} from "../model/skill";
 
 export const createSkill = async (agreement: any) => {
   return await axiosInstance.post("/skill/",agreement).then(res => res);

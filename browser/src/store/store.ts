@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import homeSlice from "./features/homeSlice";
 import userSlice from "../views/user/userSlice";
 import deptSlice from "../views/system/dept/deptSlice";

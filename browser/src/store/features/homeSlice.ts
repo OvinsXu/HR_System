@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 export const Slice = createSlice({
   name: 'home', // 命名空间，在调用action的时候会默认的设置为action的前缀

@@ -1,4 +1,4 @@
-import {ILogin, UserItem} from "../views/user/model";
+import {UserItem} from "../model/user";
 
 import axiosInstance from "../app/http";
 import {IPage} from "../views/common";

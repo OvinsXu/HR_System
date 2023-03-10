@@ -7,20 +7,20 @@ import Config from "../views/system/Config";
 import PostMgr from "../views/post/PostMgr";
 import Login from "../pages/Login";
 import WageInfo from "../views/wage/WageInfo";
-import Train from "../views/train/Train";
 import UserMgr from "../views/user/UserMgr";
 import UserAdd from "../views/user/UserAdd";
 import OperateLog from "../views/system/OperateLog";
 import LoginLog from "../views/system/LoginLog";
 import Auth from "../views/system/Auth";
 import FileSys from "../views/system/FileSys";
-import Transfer from "../views/transfer/Transfer";
 import AgreementMgr from "../views/agreement/AgreementMgr";
 import SkillMgr from "../views/skill/SkillMgr";
-import Attendance from "../views/attendance/Attendance";
 import BonusType from "../views/bonustype/BonusType";
 import Bonus from "../views/bonus/Bonus";
 import WageAdd from "../views/wage/WageAdd";
+import Attendance from "../views/attendance/Attendance";
+import Transfer from "../views/transfer/Transfer";
+import Train from "../views/train/Train";
 
 const router = createBrowserRouter([
     {path: "/login",element: <Login/>,},

@@ -1,14 +1,12 @@
 import React, {FC, useEffect, useState} from "react";
 import {
   Button,
-  Col,
   Form,
   Input,
   InputNumber,
   Pagination,
   PaginationProps,
   Popconfirm,
-  Row,
   Select,
   Table,
   Typography
@@ -18,9 +16,8 @@ import {EditableCellProps, IPage} from "../common";
 
 import moment from "moment";
 import {createAgreement, getAgreementPage, updateAgreement} from "../../api/agreement";
-import {AgreementItem} from "./model";
+import {AgreementItem} from "../../model/agreement";
 import {getUserList} from "../../api/user";
-
 
 
 const App: FC = () => {

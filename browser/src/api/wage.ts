@@ -1,8 +1,8 @@
 // import {ILogin, UserItem} from "./user";
 //
- import axiosInstance from "../app/http";
- import {IPage} from "../views/common";
-import {WageItem} from "../views/wage/model";
+import axiosInstance from "../app/http";
+import {IPage} from "../views/common";
+import {WageItem} from "../model/wage";
 //
 export const createWage = async (user: WageItem) => {
   return await axiosInstance.post("/wage/",user).then(res => res);

@@ -1,12 +1,11 @@
 import React from 'react';
-import {Form, Input, Button, Checkbox, Row, Col} from 'antd';
+import {Button, Checkbox, Col, Form, Input, Row} from 'antd';
 import {useNavigate} from "react-router-dom";
 
 import {Login} from "../api/user";
-import {ILogin} from "../views/user/model";
+import {ILogin} from "../model/user";
 
-import notification, { NotificationPlacement } from 'antd/lib/notification';
-
+import notification, {NotificationPlacement} from 'antd/lib/notification';
 
 
 const App = () => {

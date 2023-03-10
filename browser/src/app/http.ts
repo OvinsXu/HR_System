@@ -3,7 +3,6 @@ import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {message} from 'antd';
 
 
-
 // 返回res.data的interface
 export interface IResponse {
   code: number | string;

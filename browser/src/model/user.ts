@@ -1,6 +1,3 @@
-import React from "react";
-
-
 //登录参数
 export interface ILogin {
   username: string;

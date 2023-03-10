@@ -1,17 +1,5 @@
 import React, {FC, useEffect, useState} from "react";
-import {
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Pagination,
-  PaginationProps,
-  Popconfirm,
-  Row,
-  Select,
-  Table,
-  Typography
-} from "antd";
+import {Col, Pagination, PaginationProps, Row} from "antd";
 import {getDept, getDeptPage} from "./deptApi";
 
 import {IPage} from "../../common";

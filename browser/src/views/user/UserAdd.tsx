@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {AutoComplete, Button, Cascader, Checkbox, Col, Form, Input, InputNumber, message, Row, Select, Tag} from "antd";
+import {Button, Col, Form, Input, InputNumber, message, Row, Select} from "antd";
 import {createUser} from "../../api/user";
 
 const App: FC = () => {

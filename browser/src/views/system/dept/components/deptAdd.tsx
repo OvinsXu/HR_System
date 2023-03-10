@@ -1,10 +1,7 @@
-import {FC, useEffect, useState} from "react";
-import {Button, Col, Dropdown, Input, Menu, Row, Select, Space} from "antd";
-import {DownOutlined, SmileOutlined} from '@ant-design/icons';
+import {FC, useState} from "react";
+import {Button, Col, Input, Row, Select} from "antd";
 import {DeptItem} from "../deptModel";
 import {createDept} from "../deptApi";
-import {useSelector} from "react-redux";
-import {RootState} from "../../../../store/store";
 
 const App: FC = () => {
 

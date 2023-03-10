@@ -1,31 +1,14 @@
-import {
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Pagination,
-  PaginationProps,
-  Popconfirm,
-  Select,
-  Space,
-  Table,
-  Typography
-} from "antd";
+import {Form, Input, Pagination, PaginationProps, Popconfirm, Select, Table, Typography} from "antd";
 import React, {FC, useEffect, useState} from "react";
 
 
 import moment from "moment";
-import {IPage} from "../common";
-import {getPostbyID, getPostList} from "../../api/post";
-
-import {EditableCellProps} from "../common";
+import {EditableCellProps, IPage} from "../common";
+import {getPostList} from "../../api/post";
 
 import {getUserList} from "../../api/user";
 import {getSkillPage, updateSkill} from "../../api/skill";
-import { SkillItem } from "./model";
-
-
-
+import {SkillItem} from "../../model/skill";
 
 
 const App: FC = () => {

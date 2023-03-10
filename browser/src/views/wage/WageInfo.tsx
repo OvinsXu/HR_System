@@ -1,15 +1,13 @@
 import React, {FC, useEffect, useState} from "react";
-import {Button, Cascader, Form, InputNumber, Pagination, PaginationProps, Select, Table} from "antd";
+import {Cascader, Form, Pagination, PaginationProps, Table} from "antd";
 import {getWagePageByTime, getWageTime} from "../../api/wage";
-import {WageItem} from "./model";
-import {IPage} from "../common";
+import {WageItem} from "../../model/wage";
 
 interface Option {
   value: string | number;
   label: string;
   children?: Option[];
 }
-
 const App: FC = () => {
   const [form] = Form.useForm();
   const [time, setTime] = useState([] as any);

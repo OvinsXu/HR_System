@@ -1,8 +1,8 @@
 // import {ILogin, UserItem} from "./user";
 //
- import axiosInstance from "../app/http";
- import {IPage} from "../views/common";
-import {BonusItem} from "../views/bonus/model";
+import axiosInstance from "../app/http";
+import {IPage} from "../views/common";
+import {BonusItem} from "../model/bouns";
 //
 export const createBonus = async (user: BonusItem) => {
   return await axiosInstance.post("/bonus/",user).then(res => res);
