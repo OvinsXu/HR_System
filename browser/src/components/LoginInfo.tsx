@@ -2,6 +2,9 @@ import React, {FC} from "react";
 import {Button} from "antd";
 import {useNavigate} from "react-router-dom";
 
+/**
+ * 显示登录用户的信息,如果还没登录,也会跳转到登录界面
+ */
 const App: FC = () => {
   const navigate = useNavigate();
 
@@ -24,7 +27,6 @@ const App: FC = () => {
             <Button type={"primary" } danger onClick={Logout}>注销</Button>
         </>
       }
-
     </>
   );
 }

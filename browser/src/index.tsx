@@ -9,7 +9,6 @@ const root = ReactDOM.createRoot(
 
 //如果存在token,获取用户来测试是否有效
 if (localStorage.getItem("token") && !sessionStorage.getItem("token")) {
-  console.log("local有信息,session无信息")
   sessionStorage.setItem("token", localStorage.getItem("token")!);
 
   getLoginUser().then((res) => {

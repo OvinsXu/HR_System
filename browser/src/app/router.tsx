@@ -1,68 +1,57 @@
-import React from "react";
 import {createBrowserRouter} from "react-router-dom";
 import Home from "../pages/Home";
 import System from "../views/system/System";
-import Department from "../views/system/dept/Dept";
+import Department from "../views/././org/Dept";
 import Config from "../views/system/Config";
-import PostMgr from "../views/post/PostMgr";
 import Login from "../pages/Login";
-import WageInfo from "../views/wage/WageInfo";
-import UserMgr from "../views/user/UserMgr";
-import UserAdd from "../views/user/UserAdd";
+import UserInfo from "../views/user/UserInfo";
 import OperateLog from "../views/system/OperateLog";
 import LoginLog from "../views/system/LoginLog";
 import Auth from "../views/system/Auth";
 import FileSys from "../views/system/FileSys";
-import AgreementMgr from "../views/agreement/AgreementMgr";
-import SkillMgr from "../views/skill/SkillMgr";
-import BonusType from "../views/bonustype/BonusType";
-import Bonus from "../views/bonus/Bonus";
-import WageAdd from "../views/wage/WageAdd";
+
 import Attendance from "../views/attendance/Attendance";
-import Transfer from "../views/transfer/Transfer";
+
 import Train from "../views/train/Train";
+import Org from "../views/org/Org";
+import Perf from "../views/perf/Perf";
+import Recruit from "../views/recruit/Recruit";
+import Wage from "../views/wage/Wage";
+import UserPost from "../views/user/UserPost";
+import UserOther from "../views/user/UserOther";
 
 const router = createBrowserRouter([
-    {path: "/login",element: <Login/>,},
-    {path: "/",element: <Home/>,
-      children: [
-        {path: "agreement",element: <AgreementMgr/>,},
-        {path: "skill",element: <SkillMgr/>,},
-        {path: "attendance",element: <Attendance/>,},
-        {path: "system",element: <System/>,
-          children: [
-            {path: "config", element: <Config/>,},
-            {path: "login_log", element: <LoginLog/>,},
-            {path: "opt_log", element: <OperateLog/>,},
-            {path: "department", element: <Department/>,},
-            {path: "auth", element: <Auth/>,},
-            {path: "file", element: <FileSys/>,},
-          ]
-        },
-        {path: "post",
-          children: [
-            {path: "mgr", element: <PostMgr/>,},
-            {path: "move", element: <Transfer/>,},
-          ],
-        },
-        {path: "user",
-          children: [
-            {path: "mgr", element: <UserMgr/>,},
-            {path: "add", element: <UserAdd/>,},
-          ],
-        },
-        {
-          path: "wage", children: [
-            {path: "bonustype", element: <BonusType/>,},
-            {path: "bonus", element: <Bonus/>,},
-            {path: "info", element: <WageInfo/>,},
-            {path: "add", element: <WageAdd/>,},
-          ],
-        },
-        {path: "train", element: <Train/>,},
-      ],
-    },
-  ])
-;
+  {path: "/login", element: <Login/>,},
+  {
+    path: "/", element: <Home/>,
+    children: [
+      {
+        path: "user",
+        children: [
+          {path: "info", element: <UserInfo/>,},
+          {path: "post", element: <UserPost/>,},
+          {path: "other", element: <UserOther/>,},
+        ],
+      },
+      {path: "org", element: <Org/>},
+      {path: "attendance", element: <Attendance/>,},
+      {path: "train", element: <Train/>,},
+      {path: "perf", element: <Perf/>,},
+      {path: "wage", element: <Wage/>},
+      {path: "recruit", element: <Recruit/>},
+      {
+        path: "system", element: <System/>,
+        children: [
+          {path: "config", element: <Config/>,},
+          {path: "login_log", element: <LoginLog/>,},
+          {path: "opt_log", element: <OperateLog/>,},
+          {path: "department", element: <Department/>,},
+          {path: "auth", element: <Auth/>,},
+          {path: "file", element: <FileSys/>,},
+        ]
+      },
+    ],
+  },
+]);
 
 export default router;

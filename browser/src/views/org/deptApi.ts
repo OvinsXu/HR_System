@@ -1,5 +1,5 @@
-import {IPage} from "../../common";
-import axiosInstance from "../../../app/http";
+import {IPage} from "../common";
+import axiosInstance from "../../app/http";
 import {DeptItem} from "./deptModel";
 
 export const getDeptPage= async (params: IPage) => {

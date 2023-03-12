@@ -1,10 +1,8 @@
 import React from 'react';
 import {Button, Checkbox, Col, Form, Input, Row} from 'antd';
 import {useNavigate} from "react-router-dom";
-
 import {getUserRole, Login} from "../api/user";
 import {ILogin} from "../model/user";
-
 import notification, {NotificationPlacement} from 'antd/lib/notification';
 
 
@@ -59,7 +57,6 @@ const App = () => {
       <Row>
         <Col span={8}></Col>
         <Col span={8}>
-
           <Form name="basic" labelCol={{span: 8,}} wrapperCol={{span: 8,}} initialValues={{remember: false,}}
                 onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
             <Form.Item label="账号" name="username" rules={[{required: true, message: '请输入登录账号!',},]}>

@@ -2,9 +2,7 @@ import {Form, Input, Pagination, PaginationProps, Popconfirm, Select, Table, Typ
 import React, {FC, useEffect, useState} from "react";
 import {getUserPage, updateUser} from "../../api/user";
 import {UserItem} from "../../model/user";
-
 import "../system/System.module.css"
-
 import moment from "moment";
 import {EditableCellProps, IPage} from "../common";
 import {getPostList} from "../../api/post";

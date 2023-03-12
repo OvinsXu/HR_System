@@ -1,63 +1,57 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {ProfileOutlined, ReconciliationOutlined, SettingOutlined, VerifiedOutlined} from "@ant-design/icons";
+import {
+  ClusterOutlined,
+  EllipsisOutlined,
+  MehOutlined,
+  MoneyCollectOutlined,
+  NodeIndexOutlined,
+  ProfileOutlined,
+  ReadOutlined,
+  ScheduleOutlined,
+  SettingOutlined,
+  TeamOutlined,
+  TrophyOutlined,
+  UsergroupAddOutlined
+} from "@ant-design/icons";
 
 const userItems = [
   {
-    key: `1`,
-    icon: React.createElement(ProfileOutlined),
-    label: (
-      <Link to={"agreement"}>合同管理</Link>
-    ),
+    key: `common`,
+    icon: <MehOutlined/>,
+    label: "普通用户",
   },
+];
+const adminItems = [
   {
-    key: `2`,
-    icon: React.createElement(VerifiedOutlined),
-    label: (
-      <Link to={"skill"}>技能考核</Link>
-    ),
-  },
-  {
-    key: `3`,
-    icon: React.createElement(ReconciliationOutlined),
-    label: (
-      <Link to={"attendance"}>考勤信息</Link>
-    )
-  },
-  {
-    key: '4',
-    icon: React.createElement(SettingOutlined),
-    label: (
-      <Link to={"system"}>系统</Link>
-    )
+    key: `admin`,
+    icon: <SettingOutlined/>,
+    label: "管理员",
   },
 ];
 const hrItems = [
   {
     key: `user`,
-    icon: React.createElement(VerifiedOutlined),
+    icon: <TeamOutlined/>,
     label: "员工管理",
     children: [
       {
         key: `user.info`,
+        icon:<ProfileOutlined />,
         label: (
-          <Link to={"user/mgr"}>数字档案</Link>
+          <Link to={"user/info"}>数字档案</Link>
         ),
       },
       {
         key: `user.post`,
+        icon:<NodeIndexOutlined />,
         label: (
-          <Link to={"user/post"}>岗位管理</Link>
-        ),
-      },
-      {
-        key: `user.template`,
-        label: (
-          <Link to={"user/template"}>打印模板</Link>
+          <Link to={"user/post"}>岗位调动</Link>
         ),
       },
       {
         key: `user.other`,
+        icon:<EllipsisOutlined />,
         label: (
           <Link to={"user/other"}>其他事项</Link>
         ),
@@ -65,40 +59,49 @@ const hrItems = [
     ]
   },
   {
-    key: `1`,
-    icon: React.createElement(ProfileOutlined),
+    key: `org`,
+    icon: <ClusterOutlined/>,
     label: (
-      <Link to={""}>组织管理</Link>
+      <Link to={"org"}>组织管理</Link>
     ),
   },
   {
-    key: `3`,
-    icon: React.createElement(ReconciliationOutlined),
-    label: "考勤管理",
+    key: `attendance`,
+    icon: <ScheduleOutlined/>,
+    label: (
+      <Link to={"attendance"}>考勤管理</Link>
+    ),
   },
   {
-    key: '4',
-    icon: React.createElement(SettingOutlined),
+    key: 'train',
+    icon: <ReadOutlined/>,
     label: (
-      <Link to={"system"}>培训管理</Link>
+      <Link to={"train"}>培训管理</Link>
     )
   },
   {
-    key: '5',
-    icon: React.createElement(SettingOutlined),
+    key: 'perf',
+    icon: <TrophyOutlined/>,
     label: (
-      <Link to={"system"}>薪资管理</Link>
+      <Link to={"perf"}>绩效管理</Link>
     )
   },
   {
-    key: '6',
-    icon: React.createElement(SettingOutlined),
+    key: 'wage',
+    icon: <MoneyCollectOutlined/>,
     label: (
-      <Link to={"system"}>招聘管理</Link>
+      <Link to={"wage"}>薪资管理</Link>
+    )
+  },
+  {
+    key: 'recruit',
+    icon: <UsergroupAddOutlined/>,
+    label: (
+      <Link to={"recruit"}>招聘管理</Link>
     )
   },
 ];
 
 export {
-  userItems, hrItems
+  userItems, hrItems, adminItems
 }

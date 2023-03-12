@@ -18,8 +18,8 @@ import "../system/System.module.css"
 import {EditableCellProps, IPage} from "../common";
 import {createPost, getPostPage, getPostPageByStatus, updatePost} from "../../api/post";
 import {PostItem} from "../../model/post";
-import {getDept} from "../system/dept/deptApi";
-import {DeptItem} from "../system/dept/deptModel";
+import {getDept} from "./deptApi";
+import {DeptItem} from "./deptModel";
 
 
 const App: FC = () => {

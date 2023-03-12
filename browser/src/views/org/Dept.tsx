@@ -2,7 +2,7 @@ import React, {FC, useEffect, useState} from "react";
 import {Col, Pagination, PaginationProps, Row} from "antd";
 import {getDept, getDeptPage} from "./deptApi";
 
-import {IPage} from "../../common";
+import {IPage} from "../common";
 import DeptDetail from "./components/deptDetail";
 
 import DeptAdd from "./components/deptAdd";

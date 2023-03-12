@@ -1,9 +1,7 @@
 import React, {FC} from "react";
 import {Layout} from "antd";
-
 import Sider from "../containers/sider";
-import Header from "../containers/header-hr";
-
+import Header from "../containers/header";
 import {Content, Footer} from "antd/lib/layout/layout";
 import {Outlet} from "react-router-dom";
 
