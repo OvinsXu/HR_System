@@ -15,3 +15,10 @@
 - src ： 源码
   - app ：应用级代码
   - 
+
+数据
+
+- login  --> session(userinfo)  session(token)
+  - 记住 --> local(token)
+-  重载时
+  - 如果local(token) --> session(token)

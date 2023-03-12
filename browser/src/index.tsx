@@ -1,10 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import {getLoginUser} from "./api/user";
-
-import {store} from "./store/store";
-import {setUserInfo} from "./views/user/userSlice";
+import {getLoginUser, getUserRole} from "./api/user";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,7 +14,14 @@ if (localStorage.getItem("token") && !sessionStorage.getItem("token")) {
 
   getLoginUser().then((res) => {
     if (res.status === 100) {
-      store.dispatch(setUserInfo(res.data))
+      sessionStorage.setItem("userinfo", JSON.stringify(res.data));
+
+      getUserRole().then((role) => {
+        if (role.status == 100) {
+          const userrole = role.data.map((arr: any) => arr.authority.replace("ROLE_", ""));
+          sessionStorage.setItem("userrole", JSON.stringify(userrole));
+        }
+      })
     } else {
       sessionStorage.removeItem("token");
       localStorage.removeItem("token");

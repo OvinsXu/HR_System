@@ -1,12 +1,14 @@
-import React, {FC, useEffect} from "react";
+import React, {FC} from "react";
 import {Layout} from "antd";
 
-import Sider from "./components/sider";
-import Header from "./components/header-hr";
-import Content from "./components/content";
-import Footer from "./components/footer";
+import Sider from "../containers/sider";
+import Header from "../containers/header-hr";
 
-const App:FC=()=>{
+import {Content, Footer} from "antd/lib/layout/layout";
+import {Outlet} from "react-router-dom";
+
+
+const App: FC = () => {
 
   return (
     <>
@@ -14,8 +16,10 @@ const App:FC=()=>{
         <Sider/>
         <Layout>
           <Header/>
-          <Content/>
-          <Footer/>
+          <Content style={{padding: '0 24px'}}>
+            <Outlet/>
+          </Content>
+          <Footer style={{textAlign: 'center', backgroundColor: '#d1d1d1', padding: 10}}> 人事管理系统 @ovins</Footer>
         </Layout>
       </Layout>
     </>

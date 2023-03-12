@@ -1,7 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
-
 import {message} from 'antd';
-
 
 // 返回res.data的interface
 export interface IResponse {
@@ -9,7 +7,6 @@ export interface IResponse {
   data: any;
   msg: string;
 }
-
 
 let axiosInstance: AxiosInstance = axios.create({
   baseURL: "http://localhost:8080/",
@@ -20,22 +17,21 @@ let axiosInstance: AxiosInstance = axios.create({
   transformRequest: [
     function (data) {
       //由于使用的 form-data传数据所以要格式化
-      //delete data.Authorization;
       data = JSON.stringify(data);
       return data;
     }
   ]
 });
 
-// axios实例拦截响应
+/**
+ * axios实例拦截响应
+ * 当响应头含有token时,设置session
+ */
 axiosInstance.interceptors.response.use(
   (response: any) => {
-    //console.log(response)
     if (response.headers.authorization) {
-
       sessionStorage.setItem('token', response.headers.authorization);
     }
-
     if (response.status === 200) {
       return response.data;
     } else {

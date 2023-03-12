@@ -1,18 +1,10 @@
 import React, {FC} from "react";
 import {Image, Menu} from "antd";
-import LoginBar from "../../views/user/UserInfo";
-
+import LoginBar from "../components/UserInfo";
 import Sider from "antd/es/layout/Sider";
-import {
-  AuditOutlined,
-  UserOutlined,
-  PayCircleOutlined,
-  ProjectOutlined,
-
-} from "@ant-design/icons";
-import {setIndex} from "../../store/features/homeSlice";
+import {AuditOutlined, PayCircleOutlined, ProjectOutlined, UserOutlined,} from "@ant-design/icons";
+import {setIndex} from "../store/homeSlice";
 import {useDispatch} from "react-redux";
-
 
 const App: FC = () => {
   const siderItems = [

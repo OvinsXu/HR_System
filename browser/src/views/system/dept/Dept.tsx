@@ -6,8 +6,7 @@ import {IPage} from "../../common";
 import DeptDetail from "./components/deptDetail";
 
 import DeptAdd from "./components/deptAdd";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../../store/store";
+import {useDispatch} from "react-redux";
 import {setDepts} from "./deptSlice";
 
 
@@ -17,8 +16,6 @@ const App: FC = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [data, setData] = useState([]);
-
-  const {dept} = useSelector((state:RootState)=>state);
   const dispatch = useDispatch();
 
 

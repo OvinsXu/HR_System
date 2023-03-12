@@ -11,6 +11,7 @@ export const userSlice = createSlice({
       setUserInfo(state, {payload}) {
         state.userinfo.username = payload.username;
         state.userinfo.truename = payload.truename;
+        state.userinfo.role = payload.role;
         //state.userinfo.username = payload.username;
         //...
       },

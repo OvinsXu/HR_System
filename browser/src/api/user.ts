@@ -1,5 +1,4 @@
 import {UserItem} from "../model/user";
-
 import axiosInstance from "../app/http";
 import {IPage} from "../views/common";
 
@@ -7,16 +6,12 @@ export const createUser = async (user: any) => {
   return await axiosInstance.post("/user/",user).then(res => res);
 }
 
-
 /**
  * @description: 用户登录
  */
 export const Login = async (username: any, password: any) => {
   return await axiosInstance.post('/user/login', {username:username,password:password}).then(res => res);
 };
-
-
-
 
 /**
  * 获取用户分页
@@ -29,7 +24,6 @@ export const updateUser = async (params: UserItem) => {
   return await axiosInstance.put("/user/", params).then(res => res);
 }
 
-
 export const getLoginUser = async () => {
   return await axiosInstance.get("/user/loginUser").then(res=>res);
 }
@@ -40,4 +34,10 @@ export const getUser = async (uid:number) => {
 
 export const getUserList= async (params: number[]) => {
   return await axiosInstance.post("/user/list/{pids}" , params).then(res => res.data);
+}
+/**
+ * 查询登录用户的角色
+ */
+export const getUserRole = async () => {
+  return await axiosInstance.get("/user/loginUserRole/").then(res => res);
 }

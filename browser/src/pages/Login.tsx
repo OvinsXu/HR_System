@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Checkbox, Col, Form, Input, Row} from 'antd';
 import {useNavigate} from "react-router-dom";
 
-import {Login} from "../api/user";
+import {getUserRole, Login} from "../api/user";
 import {ILogin} from "../model/user";
 
 import notification, {NotificationPlacement} from 'antd/lib/notification';
@@ -12,12 +12,18 @@ const App = () => {
   const navigate = useNavigate();
 
   const onFinish = async (param: ILogin) => {
-    const res = await Login(param.username, param.password);
-    if (res.status == 100) {
-      console.log(res.data)
-      sessionStorage.setItem("userinfo", JSON.stringify(res.data));
+    const user = await Login(param.username, param.password);
+
+    if (user.status == 100) {
+      sessionStorage.setItem("userinfo", JSON.stringify(user.data));
       if (param.remember) {
         localStorage.setItem("token", sessionStorage.getItem("token")!);
+      }
+      //登陆后获取角色
+      const role = await getUserRole();
+      if (role.status == 100) {
+        const userrole = role.data.map((arr: any)=>arr.authority.replace("ROLE_",""));
+        sessionStorage.setItem("userrole", JSON.stringify(userrole));
       }
       navigate("/");
     }else{
@@ -28,6 +34,7 @@ const App = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
+
   //通知框,使用Hook
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement: NotificationPlacement) => {
@@ -53,7 +60,8 @@ const App = () => {
         <Col span={8}></Col>
         <Col span={8}>
 
-          <Form name="basic" labelCol={{span: 8,}} wrapperCol={{span: 8,}} initialValues={{remember: false,}} onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
+          <Form name="basic" labelCol={{span: 8,}} wrapperCol={{span: 8,}} initialValues={{remember: false,}}
+                onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
             <Form.Item label="账号" name="username" rules={[{required: true, message: '请输入登录账号!',},]}>
               <Input/>
             </Form.Item>

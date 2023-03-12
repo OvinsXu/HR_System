@@ -4,13 +4,10 @@ import {useNavigate} from "react-router-dom";
 
 const App: FC = () => {
   const navigate = useNavigate();
-  //const {userinfo}=useSelector((state:RootState)=>state.user);
-
 
   if (sessionStorage.getItem("token")==null){
     navigate("/login")
   }
-
 
   const Logout = () => {
     sessionStorage.removeItem("token");
