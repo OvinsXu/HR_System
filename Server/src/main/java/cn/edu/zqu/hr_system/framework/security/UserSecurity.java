@@ -32,8 +32,6 @@ public class UserSecurity implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-
     //mybatis plus不直接支持多表查询,下面是一种解决方案,即手动查询两次,另一种是写mybatis xml
     //多表查询会增加复杂度,三张表以上的联合查询再写xml
     User user = userService.getOneByUsername(username);
@@ -44,14 +42,11 @@ public class UserSecurity implements UserDetailsService {
 
     QueryWrapper<UserRole> wrapper = new QueryWrapper<>();
     wrapper.eq("uid", user.getId());
-    //wrapper.eq("status", 'Y');
     List<UserRole> userRolesList = userRoleService.list(wrapper);
 
     for (UserRole userRole : userRolesList) {
       Role role = roleService.getById(userRole.getRid());
-      //System.out.println(role);
       authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getCode()));
-      //System.out.println(authorities);
     }
 
     return new UserInfo(user.getUsername(),

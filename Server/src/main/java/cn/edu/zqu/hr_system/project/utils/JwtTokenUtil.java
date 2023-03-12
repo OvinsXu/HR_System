@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class JwtTokenUtil implements Serializable {
 
-  public final static String SECRET = "xuweitaoliaoyuanlongwujiaru";
+  public final static String SECRET = "xwt@zqu-2023";
 
   public final static Long EXPIRATION_TIME = 1000 * 60 * 60 * 24L;
 

@@ -13,17 +13,16 @@ import java.util.Collection;
 @ToString
 public class UserInfo extends User {
 
-
+  //将需要用的属性记录起来
   private long id;
-//  private String nickname;
-//  private Integer gender;
-//  private Integer type;
+  private Collection<? extends GrantedAuthority> role;
 
 
   public UserInfo(String username, String password, long uid,
                   Collection<? extends GrantedAuthority> authorities) {
     super(username, password, authorities);
     this.id = uid;
+    this.role = authorities;
   }
 
 

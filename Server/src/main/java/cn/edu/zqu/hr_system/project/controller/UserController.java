@@ -1,6 +1,7 @@
 package cn.edu.zqu.hr_system.project.controller;
 
 import cn.edu.zqu.hr_system.common.response.ResultData;
+import cn.edu.zqu.hr_system.framework.security.UserInfo;
 import cn.edu.zqu.hr_system.project.base.BaseController;
 import cn.edu.zqu.hr_system.project.model.entities.User;
 import cn.edu.zqu.hr_system.project.model.enums.ResultCode;
@@ -16,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -81,6 +83,12 @@ public class UserController extends BaseController {
     return userService.getOneByUsername(username);
   }
 
+  @ApiOperation("查找当前登录账号的角色")
+  @GetMapping("/loginUserRole")
+  public Object selectLoginUserRole(@AuthenticationPrincipal UserInfo userInfo) {
+    return userInfo.getRole();
+  }
+
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("用户列表")
   @PostMapping("/list/{uids}")
@@ -121,7 +129,6 @@ public class UserController extends BaseController {
 
     if (user != null) {
       if (CryptoUtil.matches(loginParam.password, user.getPassword())) {
-
         //使用用户名密码进行登录验证
         UsernamePasswordAuthenticationToken upToken =
                 new UsernamePasswordAuthenticationToken(loginParam.username, loginParam.password);

@@ -34,19 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired(required = false)
   ObjectMapper objectMapper;
 
-//  @Autowired(required = false)
-//  private DataSource dataSource;
   @Resource
   private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-
-
-//  @Bean
-//  public JdbcTokenRepositoryImpl tokenRepository() {
-//    JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-//    tokenRepository.setDataSource(dataSource);
-//    //tokenRepository.setCreateTableOnStartup(true); // 启动创建表，创建成功后注释掉
-//    return tokenRepository;
-//  }
 
   @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
   @Override
@@ -90,7 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin().disable()
             .httpBasic().disable()
             .logout().disable();
-
   }
 
 
@@ -108,25 +96,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //所有的请求都允许跨域
     source.registerCorsConfiguration("/**", corsConfiguration);
     return source;
-
-
   }
-
-//  @Override
-//  public void configure(WebSecurity webSecurity) {
-//    //对于在header里面增加token等类似情况，放行所有OPTIONS请求。
-//    webSecurity.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
-//    /** 去除SpringSecurity中默认的权限ROLE_前缀 */
-//    webSecurity.expressionHandler(new DefaultWebSecurityExpressionHandler() {
-//      @Override
-//      protected SecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication, FilterInvocation fi) {
-//        WebSecurityExpressionRoot root = (WebSecurityExpressionRoot) super.createSecurityExpressionRoot(authentication, fi);
-//        // 去除默认的ROLE_前缀
-//        root.setDefaultRolePrefix("");
-//        return root;
-//      }
-//    });
-//  }
-
-
 }
