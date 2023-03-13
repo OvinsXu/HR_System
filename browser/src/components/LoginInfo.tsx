@@ -8,11 +8,9 @@ import {useNavigate} from "react-router-dom";
 const App: FC = () => {
   const navigate = useNavigate();
 
-  if (sessionStorage.getItem("token")==null){
-    navigate("/login")
-  }
-
   const Logout = () => {
+    sessionStorage.removeItem("userinfo");
+    sessionStorage.removeItem("userrole");
     sessionStorage.removeItem("token");
     localStorage.removeItem("token");
     navigate("/login");
