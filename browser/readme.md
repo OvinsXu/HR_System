@@ -22,3 +22,20 @@
   - 记住 --> local(token)
 -  重载时
   - 如果local(token) --> session(token)
+
+## 学习
+
+TS的React组件传值,子组件`App: FC<PropsType> = (props)`需要写明类型`PropsType`,不然无法进行类型推导.
+
+```tsx
+//例子
+interface PropsType {
+  onClose: () => void;
+}
+const App: FC<PropsType> = (props) => {
+	const { onClose } = props;
+	onClose();
+    //return()...
+}
+```
+

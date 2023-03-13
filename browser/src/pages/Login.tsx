@@ -3,7 +3,9 @@ import {Button, Checkbox, Col, Form, Input, Row} from 'antd';
 import {useNavigate} from "react-router-dom";
 import {getUserRole, Login} from "../api/user";
 import {ILogin} from "../model/user";
-import notification, {NotificationPlacement} from 'antd/lib/notification';
+import notification from 'antd/lib/notification';
+import { NotificationPlacement } from 'antd/lib/notification/interface';
+
 
 
 const App = () => {
@@ -12,14 +14,14 @@ const App = () => {
   const onFinish = async (param: ILogin) => {
     const user = await Login(param.username, param.password);
 
-    if (user.status == 100) {
+    if (user.status === 100) {
       sessionStorage.setItem("userinfo", JSON.stringify(user.data));
       if (param.remember) {
         localStorage.setItem("token", sessionStorage.getItem("token")!);
       }
       //登陆后获取角色
       const role = await getUserRole();
-      if (role.status == 100) {
+      if (role.status === 100) {
         const userrole = role.data.map((arr: any)=>arr.authority.replace("ROLE_",""));
         sessionStorage.setItem("userrole", JSON.stringify(userrole));
       }

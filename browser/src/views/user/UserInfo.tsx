@@ -1,23 +1,36 @@
-import {Form, Input, Pagination, PaginationProps, Popconfirm, Select, Table, Typography} from "antd";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Pagination,
+  PaginationProps,
+  Popconfirm,
+  Row,
+  Select,
+  Table,
+  Typography
+} from "antd";
 import React, {FC, useEffect, useState} from "react";
 import {getUserPage, updateUser} from "../../api/user";
 import {UserItem} from "../../model/user";
 import "../system/System.module.css"
-import moment from "moment";
 import {EditableCellProps, IPage} from "../common";
 import {getPostList} from "../../api/post";
-
+import {PlusOutlined} from '@ant-design/icons';
+import UserAdd from "./UserAdd";
 
 const App: FC = () => {
+  const [form] = Form.useForm();
 
-  //响应式
   const [total, setTotal] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
-  const [postList,setPostList] = useState([] as any);
-
-
+  const [postList, setPostList] = useState([] as any);
+  const [editingKey, setEditingKey] = useState('');
+  const [hasNew, setHasNew] = useState(false);
 
   useEffect(() => {
     let param: IPage = {
@@ -26,31 +39,28 @@ const App: FC = () => {
     };
     getUserPage(param)
       .then(res => {
-
         setTotal(res.total)
         setData(res.records)
+        setHasNew(false)
       })
-  }, [pageNumber, pageSize])
+  }, [pageNumber, pageSize, hasNew])
 
-  useEffect(()=>{
-    if (data.length>0){
-      const pids = data.map((item:any)=>item.pid)
+  useEffect(() => {
+    if (data.length > 0) {
+      const pids = data.map((item: any) => item.pid)
 
-      getPostList(pids).then(res=>{
-
+      getPostList(pids).then(res => {
         setPostList(res)
       })
     }
-  },[data])
-
+  }, [data])
 
   const onChange: PaginationProps['onChange'] = (pageNumber, pageSize) => {
     setPageNumber(pageNumber);
     setPageSize(pageSize);
   };
 
-  const [form] = Form.useForm();
-  const [editingKey, setEditingKey] = useState('');
+
   const isEditing = (record: UserItem) => record.email === editingKey;
 
   const edit = (record: Partial<UserItem>) => {
@@ -65,20 +75,18 @@ const App: FC = () => {
   const save = async (key: string) => {
     try {
       const row = (await form.validateFields()) as UserItem;
-      console.log(row);
       //拷贝新数据
       const newData: any = [...data];
       const index = newData.findIndex((item: UserItem) => key === item.email);
       if (index > -1) {
         const item: UserItem = newData[index];
-        //console.log(item);
         const newRow = {
           ...item,
           ...row,
         }
-        //newRow.roleId = roles.find()
-        updateUser(newRow);
-        //console.log(newRow);
+
+        await updateUser(newRow);
+
         newData.splice(index, 1, newRow);
         setData(newData);
         setEditingKey('');
@@ -92,11 +100,6 @@ const App: FC = () => {
     }
   };
 
-  const formatterTime = (val: moment.MomentInput) => {
-    return val ? moment(val).format('YYYY-MM-DD') : '';
-  }
-
-
 
   //列设置
   const columns = [
@@ -107,7 +110,7 @@ const App: FC = () => {
       align: 'center',
       editable: true,
 
-      render: (text:any) => <a>{text}</a>,
+      render: (text: any) => <a>{text}</a>,
     },
     {
       title: '性别',
@@ -115,7 +118,7 @@ const App: FC = () => {
       key: 'sex',
       editable: true,
 
-      render:(item: string) => item =="M"?"男":"女",
+      render: (item: string) => item === "M" ? "男" : "女",
     },
     {
       title: '年龄',
@@ -127,11 +130,11 @@ const App: FC = () => {
       title: '岗位',
       dataIndex: 'pid',
       key: 'pid',
-      render:(item:any)=> {
-        if (item){
-          const post = postList.find((i:any) => i.id==item)
-          return post==null?"":post.name
-        }else{
+      render: (item: any) => {
+        if (item) {
+          const post = postList.find((i: any) => i.id === item)
+          return post == null ? "" : post.name
+        } else {
           return '无';
         }
       }
@@ -166,21 +169,27 @@ const App: FC = () => {
       key: 'cash',
       editable: true,
 
-      render:(text:any) => text =="C"?"银行卡":"现金",
+      render: (text: any) => text === "C" ? "银行卡" : "现金",
     },
     {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
       editable: true,
-      render:(text:any) =>{
-        switch (text){
-          case "S":return "实习"
-          case "J":return "兼职"
-          case "Z":return "在职"
-          case "T":return "停工"
-          case "L":return "离职"
-          case "D":return "删除"
+      render: (text: any) => {
+        switch (text) {
+          case "S":
+            return "实习"
+          case "J":
+            return "兼职"
+          case "Z":
+            return "在职"
+          case "T":
+            return "停工"
+          case "L":
+            return "离职"
+          case "D":
+            return "删除"
         }
       }
     },
@@ -208,44 +217,37 @@ const App: FC = () => {
 
   ];
 
-  const EditableCell: React.FC<EditableCellProps> = ({
-                                                       editing,
-                                                       dataIndex,
-                                                       title,
-                                                       inputType,
-                                                       record,
-                                                       index,
-                                                       children,
-                                                       ...restProps
-                                                     }) => {
+  const EditableCell: React.FC<EditableCellProps>
+    = ({editing, dataIndex, title, inputType, record, index, children, ...restProps}) => {
     let inputNode;
 
     switch (dataIndex) {
       case 'sex':
-        inputNode = <Select options={[{key:'M',label:"男",value:"M"},{key:'W',label:"女",value:"W"}]}></Select>
+        inputNode =
+          <Select options={[{key: 'M', label: "男", value: "M"}, {key: 'W', label: "女", value: "W"}]}></Select>
         break;
       case 'age':
-        inputNode = <Input type={"number"} />
+        inputNode = <Input type={"number"}/>
         break;
       case 'email':
-        inputNode = <Input type={"email"} />
+        inputNode = <Input type={"email"}/>
         break;
       case 'cash':
-        inputNode = <Select options={[{key:'C',label:"银行卡",value:"C"},{key:'M',label:"现金",value:"M"}]}></Select>
+        inputNode =
+          <Select options={[{key: 'C', label: "银行卡", value: "C"}, {key: 'M', label: "现金", value: "M"}]}></Select>
         break;
       case 'status':
         inputNode = <Select options={[
-          {key:"S",label:"实习",value:"S"},
-          {key:"J",label:"兼职",value:"J"},
-          {key:"Z",label:"在职",value:"Z"},
-          {key:"T",label:"停工",value:"T"},
-          {key:"L",label:"离职",value:"L"},
-          {key:"D",label:"删除",value:"D"},
+          {key: "S", label: "实习", value: "S"},
+          {key: "J", label: "兼职", value: "J"},
+          {key: "Z", label: "在职", value: "Z"},
+          {key: "T", label: "停工", value: "T"},
+          {key: "L", label: "离职", value: "L"},
+          {key: "D", label: "删除", value: "D"},
         ]}></Select>
         break;
       default:
         inputNode = <Input/>;
-
     }
 
     return (
@@ -285,10 +287,37 @@ const App: FC = () => {
       }),
     };
   });
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
   return (
     <>
-      <h2>员工信息页</h2>
+      <Row style={{margin: 10}}>
+        <Col>
+          <Button type={"primary"} onClick={showDrawer} icon={<PlusOutlined/>}>新建</Button>
+        </Col>
+        <Col span={9}></Col>
+        <Col>
+          <h2>员工信息页</h2>
+        </Col>
+      </Row>
+      <Drawer
+        title="录入新用户"
+        width={720}
+        onClose={onClose}
+        open={open}
+        bodyStyle={{paddingBottom: 80}}
+      >
+        <UserAdd onClose={onClose} setHasNew={setHasNew}/>
+      </Drawer>
+
       <Form form={form} component={false}>
         <Table components={{
           body: {

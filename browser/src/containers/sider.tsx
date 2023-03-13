@@ -2,19 +2,9 @@ import React, {FC} from "react";
 import {Image, Menu} from "antd";
 import LoginInfo from "../components/LoginInfo";
 import Sider from "antd/es/layout/Sider";
-
-import {setIndex} from "../store/homeSlice";
-import {useDispatch} from "react-redux";
 import {userItems} from "./sider-items";
 
 const App: FC = () => {
-
-  const siderItems = userItems;
-  const dispatch = useDispatch()
-
-  const itemOnClick = (item: any) => {
-    dispatch(setIndex({index: item.key}))
-  }
 
   return (
     <>
@@ -23,10 +13,8 @@ const App: FC = () => {
         <LoginInfo/>
         <Menu
           mode="inline"
-          items={siderItems}
-          onClick={itemOnClick}
+          items={userItems}
         />
-
       </Sider>
     </>
   );
