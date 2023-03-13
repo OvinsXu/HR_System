@@ -1,48 +1,4 @@
-// import {FC, useEffect, useState} from "react";
-// // 引入编辑器组件
-// // import BraftEditor from 'braft-editor'
-// // // 引入编辑器样式
-// // import 'braft-editor/dist/index.css'
-//
-// const App:FC=()=>{
-//   //const [editorState,setEditorState] = useState(BraftEditor.createEditorState(null));
-//
-//   // useEffect(()=>{
-//   //   const htmlContent = await fetchEditorContent()
-//   //   // 使用BraftEditor.createEditorState将html字符串转换为编辑器需要的editorStat
-//   //   setEditorState({
-//   //     editorState: BraftEditor.createEditorState(htmlContent)
-//   //   })
-//   // },[])
-//
-//
-//   // const handleEditorChange = (editorState: any) => {
-//   //   setEditorState({ editorState })
-//   // }
-//   // const submitContent = async () => {
-//   //   // 在编辑器获得焦点时按下ctrl+s会执行此方法
-//   //   // 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
-//   //   const htmlContent = editorState.toHTML()
-//   //   console.log(htmlContent)
-//   //   //const result = await saveEditorContent(htmlContent)
-//   // }
-//
-//   return (
-//     <>
-//       <h2>培训页面</h2>
-//       <div className="my-component">
-//         {/*<BraftEditor*/}
-//         {/*  value={editorState}*/}
-//         {/*  onChange={handleEditorChange}*/}
-//         {/*  onSave={submitContent}*/}
-//         {/*/>*/}
-//       </div>
-//     </>
-//   );
-// }
-//
-// export default App;
-import React, {FC, useEffect, useState} from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   Button,
   Form,
@@ -55,13 +11,13 @@ import {
   Table,
   Typography
 } from "antd";
-import {EditableCellProps, IPage} from "../common";
+import { EditableCellProps, IPage } from "../common";
 
 
-import moment from "moment";
-import {createTrain, getTrainPage, updateTrain} from "../../api/train";
-import {TrainItem} from "../../model/train";
-import {getUserList} from "../../api/user";
+import moment from 'moment';
+import { createTrain, getTrainPage, updateTrain } from "../../api/train";
+import { TrainItem } from "../../model/train";
+import { getUserList } from "../../api/user";
 
 
 const App: FC = () => {
@@ -72,9 +28,9 @@ const App: FC = () => {
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
 
-  const [userList,setUserList] = useState([] as any);
-  const [btList,setBTList] = useState([] as any);
-  const [newAMFlag,setNewAMFlag] = useState(0)
+  const [userList, setUserList] = useState([] as any);
+  const [btList, setBTList] = useState([] as any);
+  const [newAMFlag, setNewAMFlag] = useState(0)
 
   useEffect(() => {
     let param: IPage = {
@@ -87,17 +43,17 @@ const App: FC = () => {
         setTotal(res.total)
         setData(res.records)
       })
-  }, [pageNumber, pageSize,newAMFlag])
-  useEffect(()=>{
-    if (data.length>0){
+  }, [pageNumber, pageSize, newAMFlag])
+  useEffect(() => {
+    if (data.length > 0) {
 
-      const uids = data.map((item:any)=>item.uid)
-      getUserList(uids).then(res=>{
+      const uids = data.map((item: any) => item.uid)
+      getUserList(uids).then(res => {
 
         setUserList(res)
       });
     }
-  },[data])
+  }, [data])
 
   const onChange: PaginationProps['onChange'] = (pageNumber, pageSize) => {
     setPageNumber(pageNumber);
@@ -109,7 +65,7 @@ const App: FC = () => {
   const isEditing = (record: TrainItem) => record.id === editingKey;
 
   const edit = (record: Partial<TrainItem>) => {
-    form.setFieldsValue({...record});
+    form.setFieldsValue({ ...record });
     setEditingKey(record.id!);
   };
 
@@ -192,12 +148,12 @@ const App: FC = () => {
       editable: true,
 
       render: (text: string) => {
-        switch (text){
-          case 'T':return '审核中';
-          case 'P':return '审核通过';
-          case 'J':return '进行中';
-          case 'W':return '已完成';
-          case 'D':return '删除';
+        switch (text) {
+          case 'T': return '审核中';
+          case 'P': return '审核通过';
+          case 'J': return '进行中';
+          case 'W': return '已完成';
+          case 'D': return '删除';
         }
       }
 
@@ -209,7 +165,7 @@ const App: FC = () => {
         const editable = isEditing(record as TrainItem);
         return editable ? (
           <span>
-            <Typography.Link onClick={() => save(record.id!)} style={{marginRight: 8}}>
+            <Typography.Link onClick={() => save(record.id!)} style={{ marginRight: 8 }}>
               保存
             </Typography.Link>
             <Popconfirm title="确定取消?" cancelText={'取消'} okText={'确认'} onConfirm={cancel}>
@@ -227,20 +183,20 @@ const App: FC = () => {
   ];
 
   const EditableCell: React.FC<EditableCellProps> = ({
-                                                       editing,
-                                                       dataIndex,
-                                                       title,
-                                                       inputType,
-                                                       record,
-                                                       index,
-                                                       children,
-                                                       ...restProps
-                                                     }) => {
+    editing,
+    dataIndex,
+    title,
+    inputType,
+    record,
+    index,
+    children,
+    ...restProps
+  }) => {
     let inputNode;
 
     switch (dataIndex) {
       case 'status':
-        inputNode = <Select style={{width: 120}}>
+        inputNode = <Select style={{ width: 120 }}>
           <option key={1} value={'T'}>{"审核中"}</option>
           <option key={2} value={'P'}>{"审核通过"}</option>
           <option key={3} value={'J'}>{"进行中"}</option>
@@ -249,7 +205,7 @@ const App: FC = () => {
         </Select>
         break;
       default:
-        inputNode = <Input name={""}/>;
+        inputNode = <Input name={""} />;
 
     }
 
@@ -259,7 +215,7 @@ const App: FC = () => {
         {editing ? (
           <Form.Item
             name={dataIndex}
-            style={{margin: 0}}
+            style={{ margin: 0 }}
             rules={[
               {
                 required: true,
@@ -295,9 +251,9 @@ const App: FC = () => {
 
   const onFinish = (values: any) => {
     console.log(values)
-    values.status="T";
-    createTrain(values).then(res=>{
-      setNewAMFlag(newAMFlag+1)
+    values.status = "T";
+    createTrain(values).then(res => {
+      setNewAMFlag(newAMFlag + 1)
       console.log(res)
     })
   };
@@ -310,21 +266,21 @@ const App: FC = () => {
     <>
       <h2>培训信息页</h2>
       <Form form={newForm} name="basic" layout={"inline"} onFinish={onFinish}
-            onFinishFailed={onFinishFailed}>
-        <Form.Item rules={ [{required:true,}]} name="title">
-          <Input placeholder={"培训名称"} style={{width: 80}}/>
+        onFinishFailed={onFinishFailed}>
+        <Form.Item rules={[{ required: true, }]} name="title">
+          <Input placeholder={"培训名称"} style={{ width: 80 }} />
         </Form.Item>
-        <Form.Item rules={ [{required:true,}]} name="brief">
-          <Input placeholder={"培训简介"} style={{width: 120}}/>
+        <Form.Item rules={[{ required: true, }]} name="brief">
+          <Input placeholder={"培训简介"} style={{ width: 120 }} />
         </Form.Item>
-        <Form.Item rules={ [{required:true,}]} name="sum">
-          <InputNumber placeholder={"培训人数"} style={{width: 120}}/>
+        <Form.Item rules={[{ required: true, }]} name="sum">
+          <InputNumber placeholder={"培训人数"} style={{ width: 120 }} />
         </Form.Item>
-        开始时间:<Form.Item rules={ [{required:true,}]} name="beginTime">
-          <Input type={"date"}  style={{width: 150}}/>
+        开始时间:<Form.Item rules={[{ required: true, }]} name="beginTime">
+          <Input type={"date"} style={{ width: 150 }} />
         </Form.Item>
-        结束时间:<Form.Item rules={ [{required:true,}]} name="endTime">
-          <Input type={"date"}  style={{width: 150}}/>
+        结束时间:<Form.Item rules={[{ required: true, }]} name="endTime">
+          <Input type={"date"} style={{ width: 150 }} />
         </Form.Item>
         <Form.Item>
           <Button type={"primary"} htmlType="submit">新建</Button>
@@ -335,9 +291,9 @@ const App: FC = () => {
           body: {
             cell: EditableCell,
           },
-        }} columns={mergedColumns} rowClassName="editable-row" dataSource={data} pagination={false} bordered/>
+        }} columns={mergedColumns} rowClassName="editable-row" dataSource={data} pagination={false} bordered />
       </Form>
-      <Pagination showQuickJumper defaultCurrent={1} total={total} onChange={onChange}/>
+      <Pagination showQuickJumper defaultCurrent={1} total={total} onChange={onChange} />
     </>
   );
 }

@@ -1,24 +1,11 @@
-import {
-  Button,
-  Col,
-  Drawer,
-  Form,
-  Input,
-  Pagination,
-  PaginationProps,
-  Popconfirm,
-  Row,
-  Select,
-  Table,
-  Typography
-} from "antd";
-import React, {FC, useEffect, useState} from "react";
-import {getUserPage, updateUser} from "../../api/user";
-import {UserItem} from "../../model/user";
+import { Button, Col, Drawer, Form, Input, Pagination, PaginationProps, Popconfirm, Row, Select, Table, Typography } from "antd";
+import React, { FC, useEffect, useState } from "react";
+import { eraseUser, getUserPage, updateUser } from "../../api/user";
+import { UserItem } from "../../model/user";
 import "../system/System.module.css"
-import {EditableCellProps, IPage} from "../common";
-import {getPostList} from "../../api/post";
-import {PlusOutlined} from '@ant-design/icons';
+import { EditableCellProps, IPage } from "../common";
+import { getPostList } from "../../api/post";
+import { PlusOutlined } from '@ant-design/icons';
 import UserAdd from "./UserAdd";
 
 const App: FC = () => {
@@ -29,7 +16,7 @@ const App: FC = () => {
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
   const [postList, setPostList] = useState([] as any);
-  const [editingKey, setEditingKey] = useState('');
+  const [editingKey, setEditingKey] = useState(0);
   const [hasNew, setHasNew] = useState(false);
 
   useEffect(() => {
@@ -61,39 +48,48 @@ const App: FC = () => {
   };
 
 
-  const isEditing = (record: UserItem) => record.email === editingKey;
+  const isEditing = (record: UserItem) => record.id === editingKey;
 
   const edit = (record: Partial<UserItem>) => {
-    form.setFieldsValue({name: '', age: '', address: '', ...record});
-    setEditingKey(record.email!);
+    form.setFieldsValue({ name: '', age: '', address: '', ...record });
+    setEditingKey(record.id!);
   };
 
   const cancel = () => {
-    setEditingKey('');
+    setEditingKey(0);
   };
 
   const save = async (key: string) => {
     try {
+      //验证格式
       const row = (await form.validateFields()) as UserItem;
-      //拷贝新数据
+      //拷贝数据,用于操作
       const newData: any = [...data];
+      //找到操作的列
       const index = newData.findIndex((item: UserItem) => key === item.email);
       if (index > -1) {
         const item: UserItem = newData[index];
-        const newRow = {
+        const newRow = {  //合并两个数组
           ...item,
-          ...row,
+          ...row,         //相同属性,以新的为准
         }
-
-        await updateUser(newRow);
-
-        newData.splice(index, 1, newRow);
-        setData(newData);
-        setEditingKey('');
+        
+        if(newRow!=item){//如果有变化
+          if(newRow.status==="D"){//如果是删除
+            await eraseUser(newRow.id).then(()=>{
+              setHasNew(true);
+            });
+          }else{
+            await updateUser(newRow).then(()=>{
+              setHasNew(true);
+            });
+          }
+        }
+        setEditingKey(0);
       } else {
         newData.push(row);
         setData(newData);
-        setEditingKey('');
+        setEditingKey(0);
       }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
@@ -188,8 +184,6 @@ const App: FC = () => {
             return "停工"
           case "L":
             return "离职"
-          case "D":
-            return "删除"
         }
       }
     },
@@ -200,7 +194,7 @@ const App: FC = () => {
         const editable = isEditing(record as UserItem);
         return editable ? (
           <span>
-            <Typography.Link onClick={() => save(record.email!)} style={{marginRight: 8}}>
+            <Typography.Link onClick={() => save(record.email!)} style={{ marginRight: 8 }}>
               保存
             </Typography.Link>
             <Popconfirm title="确定取消?" cancelText={'取消'} okText={'确认'} onConfirm={cancel}>
@@ -208,7 +202,7 @@ const App: FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+          <Typography.Link disabled={editingKey !== 0} onClick={() => edit(record)}>
             编辑
           </Typography.Link>
         );
@@ -218,60 +212,60 @@ const App: FC = () => {
   ];
 
   const EditableCell: React.FC<EditableCellProps>
-    = ({editing, dataIndex, title, inputType, record, index, children, ...restProps}) => {
-    let inputNode;
+    = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
+      let inputNode;
 
-    switch (dataIndex) {
-      case 'sex':
-        inputNode =
-          <Select options={[{key: 'M', label: "男", value: "M"}, {key: 'W', label: "女", value: "W"}]}></Select>
-        break;
-      case 'age':
-        inputNode = <Input type={"number"}/>
-        break;
-      case 'email':
-        inputNode = <Input type={"email"}/>
-        break;
-      case 'cash':
-        inputNode =
-          <Select options={[{key: 'C', label: "银行卡", value: "C"}, {key: 'M', label: "现金", value: "M"}]}></Select>
-        break;
-      case 'status':
-        inputNode = <Select options={[
-          {key: "S", label: "实习", value: "S"},
-          {key: "J", label: "兼职", value: "J"},
-          {key: "Z", label: "在职", value: "Z"},
-          {key: "T", label: "停工", value: "T"},
-          {key: "L", label: "离职", value: "L"},
-          {key: "D", label: "删除", value: "D"},
-        ]}></Select>
-        break;
-      default:
-        inputNode = <Input/>;
-    }
+      switch (dataIndex) {
+        case 'sex':
+          inputNode =
+            <Select options={[{ key: 'M', label: "男", value: "M" }, { key: 'W', label: "女", value: "W" }]}></Select>
+          break;
+        case 'age':
+          inputNode = <Input type={"number"} />
+          break;
+        case 'email':
+          inputNode = <Input type={"email"} />
+          break;
+        case 'cash':
+          inputNode =
+            <Select options={[{ key: 'C', label: "银行卡", value: "C" }, { key: 'M', label: "现金", value: "M" }]}></Select>
+          break;
+        case 'status':
+          inputNode = <Select options={[
+            { key: "S", label: "实习", value: "S" },
+            { key: "J", label: "兼职", value: "J" },
+            { key: "Z", label: "在职", value: "Z" },
+            { key: "T", label: "停工", value: "T" },
+            { key: "L", label: "离职", value: "L" },
+            { key: "D", label: "删除", value: "D" },
+          ]}></Select>
+          break;
+        default:
+          inputNode = <Input />;
+      }
 
-    return (
-      <td {...restProps}>
+      return (
+        <td {...restProps}>
 
-        {editing ? (
-          <Form.Item
-            name={dataIndex}
-            style={{margin: 0}}
-            rules={[
-              {
-                required: true,
-                message: `请输入 ${title}!`,
-              },
-            ]}
-          >
-            {inputNode}
-          </Form.Item>
-        ) : (
-          children
-        )}
-      </td>
-    );
-  };
+          {editing ? (
+            <Form.Item
+              name={dataIndex}
+              style={{ margin: 0 }}
+              rules={[
+                {
+                  required: true,
+                  message: `请输入 ${title}!`,
+                },
+              ]}
+            >
+              {inputNode}
+            </Form.Item>
+          ) : (
+            children
+          )}
+        </td>
+      );
+    };
   const mergedColumns: any = columns.map(col => {
     if (!col.editable) {
       return col;
@@ -299,9 +293,9 @@ const App: FC = () => {
 
   return (
     <>
-      <Row style={{margin: 10}}>
+      <Row style={{ margin: 10 }}>
         <Col>
-          <Button type={"primary"} onClick={showDrawer} icon={<PlusOutlined/>}>新建</Button>
+          <Button type={"primary"} onClick={showDrawer} icon={<PlusOutlined />}>新建</Button>
         </Col>
         <Col span={9}></Col>
         <Col>
@@ -313,9 +307,9 @@ const App: FC = () => {
         width={720}
         onClose={onClose}
         open={open}
-        bodyStyle={{paddingBottom: 80}}
+        bodyStyle={{ paddingBottom: 80 }}
       >
-        <UserAdd onClose={onClose} setHasNew={setHasNew}/>
+        <UserAdd onClose={onClose} setHasNew={setHasNew} />
       </Drawer>
 
       <Form form={form} component={false}>
@@ -323,9 +317,9 @@ const App: FC = () => {
           body: {
             cell: EditableCell,
           },
-        }} columns={mergedColumns} rowClassName="editable-row" dataSource={data} pagination={false} bordered/>
+        }} columns={mergedColumns} rowClassName="editable-row" dataSource={data} pagination={false} bordered />
       </Form>
-      <Pagination showQuickJumper defaultCurrent={1} total={total} onChange={onChange}/>
+      <Pagination showQuickJumper defaultCurrent={1} total={total} onChange={onChange} />
     </>
   );
 }
