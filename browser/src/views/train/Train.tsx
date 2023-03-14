@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, {FC, useEffect, useState} from "react";
 import {
   Button,
   Form,
@@ -11,13 +11,13 @@ import {
   Table,
   Typography
 } from "antd";
-import { EditableCellProps, IPage } from "../common";
+import {EditableCellProps, IPage} from "../common";
 
 
 import moment from 'moment';
-import { createTrain, getTrainPage, updateTrain } from "../../api/train";
-import { TrainItem } from "../../model/train";
-import { getUserList } from "../../api/user";
+import {createTrain, getTrainPage, updateTrain} from "../../api/train";
+import {TrainItem} from "../../model/train";
+import {getUserList} from "../../api/user";
 
 
 const App: FC = () => {

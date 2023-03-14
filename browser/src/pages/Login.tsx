@@ -4,8 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {getUserRole, Login} from "../api/user";
 import {ILogin} from "../model/user";
 import notification from 'antd/lib/notification';
-import { NotificationPlacement } from 'antd/lib/notification/interface';
-
+import {NotificationPlacement} from 'antd/lib/notification/interface';
 
 
 const App = () => {

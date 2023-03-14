@@ -1,22 +1,9 @@
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Pagination,
-  PaginationProps,
-  Popconfirm,
-  Row,
-  Select,
-  Table,
-  Typography
-} from "antd";
+import {Button, Col, Form, Input, Pagination, PaginationProps, Popconfirm, Row, Select, Table, Typography} from "antd";
 import React, {FC, useEffect, useState} from "react";
 import "../system/System.module.css"
 import {EditableCellProps, IPage} from "../common";
-import {createPost, erasePost, getDept, getPostPage, getPostPageByStatus, updatePost} from "../../api/org";
-import {DeptItem, PostItem} from "../../model/org";
+import {createDept, eraseDept, getDept, getDeptPage, getDeptPageByStatus, updateDept} from "../../api/org";
+import {DeptItem} from "../../model/org";
 
 
 const App: FC = () => {
@@ -25,7 +12,7 @@ const App: FC = () => {
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
   const [dept, setDept] = useState([] as Array<DeptItem>);
-  const [postItem, setPostItem] = useState({} as PostItem);
+  const [DeptItem, setDeptItem] = useState({} as DeptItem);
   const [status, setStatus] = useState('Y');
   const [hasNew, setHasNew] = useState(false);
 
@@ -34,13 +21,13 @@ const App: FC = () => {
       current: pageNumber,
       size: pageSize,
     };
-    getPostPage(param)
+    getDeptPage(param)
       .then(res => {
         setTotal(res.total)
         setData(res.records)
         setHasNew(false)
       })
-  }, [pageNumber, pageSize, postItem,hasNew]);
+  }, [pageNumber, pageSize, DeptItem,hasNew]);
 
   useEffect(() => {
     let param = {
@@ -49,7 +36,7 @@ const App: FC = () => {
       status:status,
     };
 
-    getPostPageByStatus(param)
+    getDeptPageByStatus(param)
       .then(res => {
         setTotal(res.total)
         setData(res.records)
@@ -70,9 +57,9 @@ const App: FC = () => {
 
   const [form] = Form.useForm();
   const [editingKey, setEditingKey] = useState(0);
-  const isEditing = (record: PostItem) => record.id === editingKey;
+  const isEditing = (record: DeptItem) => record.id === editingKey;
 
-  const edit = (record: Partial<PostItem>) => {
+  const edit = (record: Partial<DeptItem>) => {
     form.setFieldsValue({...record});
     setEditingKey(record.id!);
   };
@@ -82,11 +69,11 @@ const App: FC = () => {
   };
   const save = async (key: number) => {
     try {
-      const row = (await form.validateFields()) as PostItem;
+      const row = (await form.validateFields()) as DeptItem;
       const newData: any = [...data];
-      const index = newData.findIndex((item: PostItem) => key === item.id);
+      const index = newData.findIndex((item: DeptItem) => key === item.id);
       if (index > -1) {
-        const item: PostItem = newData[index];
+        const item: DeptItem = newData[index];
         const newRow = {
           ...item,
           ...row,
@@ -94,11 +81,11 @@ const App: FC = () => {
 
         if(newRow!==item){//如果有变化
           if(newRow.status==="D"){//如果是删除
-            await erasePost(newRow.id).then(()=>{
+            await eraseDept(newRow.id).then(()=>{
               setHasNew(true);
             });
           }else{
-            await updatePost(newRow).then(()=>{
+            await updateDept(newRow).then(()=>{
               setHasNew(true);
             });
           }
@@ -143,12 +130,6 @@ const App: FC = () => {
       }
     },
     {
-      title: '编码',
-      dataIndex: 'code',
-      key: 'code',
-      editable: true,
-    },
-    {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
@@ -157,17 +138,10 @@ const App: FC = () => {
 
     },
     {
-      title: '招聘人数',
-      dataIndex: 'recruit',
-      key: 'recruit',
-      editable: true,
-
-    },
-    {
       title: '操作',
       dataIndex: 'operation',
-      render: (_: any, record: Partial<PostItem>) => {
-        const editable = isEditing(record as PostItem);
+      render: (_: any, record: Partial<DeptItem>) => {
+        const editable = isEditing(record as DeptItem);
         return editable ? (
           <span>
             <Typography.Link onClick={() => save(record.id!)} style={{marginRight: 8}}>
@@ -202,6 +176,7 @@ const App: FC = () => {
     switch (dataIndex) {
       case 'did':
         inputNode = <Select style={{width: 120}}>
+          <option value={undefined}>{'无'}</option>
           {
             dept.map((item) =>
               <option key={item.id} value={item.id}>{item.name}</option>
@@ -216,9 +191,6 @@ const App: FC = () => {
           <option key={3} value={'D'}>{"删除"}</option>
         </Select>
         break;
-      case 'recruit':
-        inputNode = <InputNumber/>
-        break;
       default:
         inputNode = <Input/>;
     }
@@ -227,16 +199,7 @@ const App: FC = () => {
       <td {...restProps}>
 
         {editing ? (
-          <Form.Item
-            name={dataIndex}
-            style={{margin: 0}}
-            rules={[
-              {
-                required: true,
-                message: `请输入 ${title}!`,
-              },
-            ]}
-          >
+          <Form.Item name={dataIndex} style={{margin: 0}}>
             {inputNode}
           </Form.Item>
         ) : (
@@ -251,7 +214,7 @@ const App: FC = () => {
     }
     return {
       ...col,
-      onCell: (record: PostItem) => ({
+      onCell: (record: DeptItem) => ({
         record,
         inputType: col.dataIndex === 'code' ? 'number' : 'text',
         dataIndex: col.dataIndex,
@@ -262,16 +225,16 @@ const App: FC = () => {
   });
 
 
-  let tempPost = {status: 'Y'} as PostItem;
+  let tempDept = {status: 'Y'} as DeptItem;
 
   const btnAddOnClick = () => {
-    createPost(tempPost).then(() => {
-      setPostItem(tempPost)
+    createDept(tempDept).then((res) => {
+      setDeptItem(tempDept)
     })
   }
   const btnStatusOnClick = (status: string) => {
     if (status.length===0) {
-      setPostItem(tempPost)
+      setDeptItem(tempDept)
     } else {
       setStatus(status)
     }
@@ -282,21 +245,18 @@ const App: FC = () => {
       <Form form={form} component={false}>
         <Row>
           <Col><Input onChange={(e) => {
-            tempPost = {...tempPost, name: e.target.value};
+            tempDept = {...tempDept, name: e.target.value};
 
-          }} placeholder={"岗位名称"} style={{width: 150}}/></Col>
+          }} placeholder={"部门名称"} style={{width: 150}}/></Col>
           <Col>
             <Select onChange={(e) => {
-              tempPost = {...tempPost, did: e};
+              tempDept = {...tempDept, did: e};
 
             }} placeholder={"所属部门"} style={{width: 100}} options={
               dept.map((item) => {
                 return {key: item.id, label: item.name, value: item.id}
               })}/>
           </Col>
-          <Col><Input onChange={(e) => {
-            tempPost = {...tempPost, code: e.target.value}
-          }} placeholder={"岗位编码"} style={{width: 100}}/></Col>
           <Col><Button type={"primary"} onClick={btnAddOnClick}>新建</Button></Col>
           <Col offset={5}>
             <Button style={{width:120}} onClick={() => btnStatusOnClick("Y")}>仅查看已启用</Button>

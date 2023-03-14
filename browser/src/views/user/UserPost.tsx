@@ -15,7 +15,7 @@ import React, {FC, useEffect, useState} from "react";
 
 import moment from "moment";
 import {EditableCellProps, IPage} from "../common";
-import {getPostList} from "../../api/post";
+import {getPostList} from "../../api/org";
 import {TransferItem} from "../../model/transfer";
 import {createTransfer, getTransferPage, updateTransfer} from "../../api/transfer";
 import {getUserList} from "../../api/user";
@@ -65,7 +65,7 @@ const App: FC = () => {
         setPostList(res)
       });
     }
-  }, [userList])
+  }, [userList,data])
 
 
   const onChange: PaginationProps['onChange'] = (pageNumber, pageSize) => {
@@ -132,7 +132,7 @@ const App: FC = () => {
       //editable: true,
 
       render: (item: any) => {
-        const user = userList.find((i: any) => i.id == item)
+        const user = userList.find((i: any) => i.id === item)
         return user == null ? "" : user.truename
       }
     },
@@ -142,10 +142,10 @@ const App: FC = () => {
       key: 'uid',
       align: 'center',
       render: (item: any) => {
-        const user = userList.find((i: any) => i.id == item)
+        const user = userList.find((i: any) => i.id === item)
         // console.log("user")
         // console.log(user.pid)
-        const post = postList.find((i: any) => i.id == user.pid)
+        const post = postList.find((i: any) => i.id === user.pid)
         // console.log("post")
         // console.log(post)
         return post == null ? "无" : post.name
@@ -159,7 +159,7 @@ const App: FC = () => {
       key: 'pid',
       render: (item: any) => {
         if (item) {
-          const post = postList.find((i: any) => i.id == item)
+          const post = postList.find((i: any) => i.id === item)
           return post == null ? "" : post.name
         } else {
           return '无';
@@ -171,7 +171,7 @@ const App: FC = () => {
       dataIndex: 'status',
       key: 'status',
       editable: true,
-      render: (item: string) => item == 'Y' ? "审核通过" : (item == "N" ? "待审核" : "驳回")
+      render: (item: string) => item === 'Y' ? "审核通过" : (item === "N" ? "待审核" : "驳回")
     },
 
     {

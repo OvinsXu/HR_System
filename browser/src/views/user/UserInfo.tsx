@@ -1,11 +1,24 @@
-import { Button, Col, Drawer, Form, Input, Pagination, PaginationProps, Popconfirm, Row, Select, Table, Typography } from "antd";
-import React, { FC, useEffect, useState } from "react";
-import { eraseUser, getUserPage, updateUser } from "../../api/user";
-import { UserItem } from "../../model/user";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Pagination,
+  PaginationProps,
+  Popconfirm,
+  Row,
+  Select,
+  Table,
+  Typography
+} from "antd";
+import React, {FC, useEffect, useState} from "react";
+import {eraseUser, getUserPage, updateUser} from "../../api/user";
+import {UserItem} from "../../model/user";
 import "../system/System.module.css"
-import { EditableCellProps, IPage } from "../common";
-import { getPostList } from "../../api/post";
-import { PlusOutlined } from '@ant-design/icons';
+import {EditableCellProps, IPage} from "../common";
+import {getPostList} from "../../api/org";
+import {PlusOutlined} from '@ant-design/icons';
 import UserAdd from "./UserAdd";
 
 const App: FC = () => {
@@ -36,7 +49,7 @@ const App: FC = () => {
     if (data.length > 0) {
       const pids = data.map((item: any) => item.pid)
 
-      getPostList(pids).then(res => {
+      getPostList(pids).then((res:any) => {
         setPostList(res)
       })
     }
@@ -59,22 +72,22 @@ const App: FC = () => {
     setEditingKey(0);
   };
 
-  const save = async (key: string) => {
+  const save = async (key: number) => {
     try {
       //验证格式
       const row = (await form.validateFields()) as UserItem;
       //拷贝数据,用于操作
       const newData: any = [...data];
       //找到操作的列
-      const index = newData.findIndex((item: UserItem) => key === item.email);
+      const index = newData.findIndex((item: UserItem) => key === item.id);
       if (index > -1) {
         const item: UserItem = newData[index];
         const newRow = {  //合并两个数组
           ...item,
           ...row,         //相同属性,以新的为准
         }
-        
-        if(newRow!=item){//如果有变化
+
+        if(newRow!==item){//如果有变化
           if(newRow.status==="D"){//如果是删除
             await eraseUser(newRow.id).then(()=>{
               setHasNew(true);
@@ -106,7 +119,7 @@ const App: FC = () => {
       align: 'center',
       editable: true,
 
-      render: (text: any) => <a>{text}</a>,
+      render: (text: any) => <a title="点击打印文件模板">{text}</a>,
     },
     {
       title: '性别',
@@ -146,6 +159,9 @@ const App: FC = () => {
       dataIndex: 'email',
       key: 'email',
       editable: true,
+
+      render:(item:string)=><a href={"mailto:"+item} title="点击发送邮件">{item}</a>
+
     },
     {
       title: '手机号码',
@@ -194,7 +210,7 @@ const App: FC = () => {
         const editable = isEditing(record as UserItem);
         return editable ? (
           <span>
-            <Typography.Link onClick={() => save(record.email!)} style={{ marginRight: 8 }}>
+            <Typography.Link onClick={() => save(record.id!)} style={{ marginRight: 8 }}>
               保存
             </Typography.Link>
             <Popconfirm title="确定取消?" cancelText={'取消'} okText={'确认'} onConfirm={cancel}>

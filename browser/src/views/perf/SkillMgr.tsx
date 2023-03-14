@@ -4,7 +4,7 @@ import React, {FC, useEffect, useState} from "react";
 
 import moment from "moment";
 import {EditableCellProps, IPage} from "../common";
-import {getPostList} from "../../api/post";
+import {getPostList} from "../../api/org";
 
 import {getUserList} from "../../api/user";
 import {getSkillPage, updateSkill} from "../../api/skill";
@@ -57,7 +57,7 @@ const App: FC = () => {
       //console.log("opids")
       //console.log([...pids, ...opids])
 
-      getPostList([...pids, ...opids]).then(res=>{
+      getPostList([...pids, ...opids]).then((res:any)=>{
 
         setPostList(res)
       });
@@ -130,7 +130,7 @@ const App: FC = () => {
       //editable: true,
 
       render: (item:any) => {
-        const user = userList.find((i:any) => i.id==item)
+        const user = userList.find((i:any) => i.id===item)
         return user==null?"":user.truename
       }
     },
@@ -155,7 +155,7 @@ const App: FC = () => {
       dataIndex: 'status',
       key: 'status',
       editable: true,
-      render:(item:string)=>item =='Y'?"审核通过":(item =="N"?"待审核":"驳回")
+      render:(item:string)=>item ==='Y'?"审核通过":(item ==="N"?"待审核":"驳回")
     },
 
     {

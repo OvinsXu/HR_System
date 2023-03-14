@@ -39,3 +39,10 @@ const App: FC<PropsType> = (props) => {
 }
 ```
 
+
+
+
+
+## 问题
+
+useState异步问题：https://blog.csdn.net/qq_61233877/article/details/124017052

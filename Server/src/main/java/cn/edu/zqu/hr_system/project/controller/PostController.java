@@ -53,6 +53,11 @@ public class PostController extends BaseController {
   }
 
 
+  @ApiOperation("所有岗位")
+  @GetMapping("/")
+  public List<Post> selectAll() {
+    return postService.list();
+  }
   @ApiOperation("无条件分页查询")
   @GetMapping("/page")
   public Page<Post> selectPage(@RequestParam int current, @RequestParam int size) {

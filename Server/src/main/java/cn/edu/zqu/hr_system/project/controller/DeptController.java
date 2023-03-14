@@ -48,12 +48,6 @@ public class DeptController extends BaseController {
     return departmentService.getById(uid);
   }
 
-//  @ApiOperation("部门名查找")
-//  @GetMapping("/name")
-//  public Department selectOneByName(@PathVariable String name) {
-//    return departmentService.getByName(name);
-//  }
-
 
   //@PreAuthorize("hasAnyRole('Owner')")
   @ApiOperation("部门列表")
