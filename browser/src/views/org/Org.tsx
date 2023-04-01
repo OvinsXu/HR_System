@@ -6,6 +6,7 @@ import DeptMgr from "./DeptMgr";
 import PostMgr from './PostMgr';
 import {getAllDept, getAllPost} from "../../api/org";
 import {PostItem} from "../../model/org";
+import {PlusOutlined} from "@ant-design/icons";
 
 const App: React.FC = () => {
 
@@ -119,6 +120,11 @@ const App: React.FC = () => {
 
   return (
     <>
+      <Row justify="center" style={{ margin: 10 }}>
+        <Col>
+          <h2>组织管理</h2>
+        </Col>
+      </Row>
       <Row justify="center">
         <OrganizationTreeGraph data={data} nodeType='rect'
                                width={1000} height={400} style={{border: '1px solid green', margin: 20}}
@@ -132,7 +138,7 @@ const App: React.FC = () => {
           //minimapCfg = {{ show: true}}  //显示导航小视图
         />
       </Row>
-      <Row justify="center">
+      <Row justify="center" style={{ margin: 10 }}>
         <Col span={4}><Button type={'primary'} onClick={() => setOpen('dept')}>部门管理</Button></Col>
         <Col span={4}><Button type={'primary'} onClick={() => setOpen('post')}>岗位管理</Button></Col>
       </Row>
