@@ -25,3 +25,7 @@ Spring boot已经有3.0版本，Spring Security也有了6.0版本。有空会考
 ## 接口说明
 
 swagger : http://localhost:8080/swagger-ui/index.html
+
+## 遇到過的問題
+
+null值不更新:https://juejin.cn/post/6971765090307538980

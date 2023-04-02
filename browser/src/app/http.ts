@@ -42,8 +42,10 @@ axiosInstance.interceptors.response.use(
   (error: any) => {
     const {response} = error;
     console.log(response)
-    if (response.status==403){
-        window.location.href="#/login"
+    if (response.status===403){
+        window.location.href="/login";
+        sessionStorage.removeItem("token");
+        localStorage.removeItem("token");
     }
     if (response) {
       // 请求已发出，但是不在2xx的范围

@@ -74,7 +74,6 @@ public class DeptController extends BaseController {
   @ApiOperation("更改部门")
   @PutMapping("/")
   public String update(@RequestBody Department dept) {
-    System.out.println(dept);
     return Result(departmentService.updateById(dept));
   }
 

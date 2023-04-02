@@ -1,9 +1,6 @@
 package cn.edu.zqu.hr_system.project.model.entities;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.sql.Date;
@@ -12,6 +9,7 @@ import java.sql.Date;
 public class Department {
   @TableId(type = IdType.AUTO)
   Long id; //
+  @TableField(updateStrategy = FieldStrategy.IGNORED)
   Long did; // 父级部门
   Long uid; // 部门主任
 
