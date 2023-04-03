@@ -51,10 +51,15 @@ export const getUser = async (uid:number) => {
 /**
  * 根据id查询多个用户
  */
-export const getUserList= async (params: number[]) => {
-  return await axiosInstance.post("/user/list/{pids}" , params).then(res => res.data);
+export const getUserList= async (uids: number[]) => {
+  return await axiosInstance.post("/user/list/" , uids).then(res => res.data);
 }
-
+/**
+ * 根据truename模糊查询多个用户
+ */
+export const getUserListLike= async (truename:string) => {
+  return await axiosInstance.get("/user/like" , {params:{truename}}).then(res => res.data);
+}
 /**
  * 根据id删除用户
  */

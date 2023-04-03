@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -17,6 +19,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     QueryWrapper<User> wrapper = new QueryWrapper<>();
     wrapper.eq("username", username);
     return getOne(wrapper);
+  }
+
+  @Override
+  public List<User> getOneLikeTruename(String truename) {
+    QueryWrapper<User> wrapper = new QueryWrapper<>();
+    wrapper.like("truename", truename);
+    return list(wrapper);
   }
 
 }

@@ -64,7 +64,7 @@ public class UserController extends BaseController {
 
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("删除用户列表")
-  @PostMapping("/list")
+  @DeleteMapping("/list")
   public String eraseUsers(@RequestBody List<Long> uids) {
     return Result(userService.removeBatchByIds(uids));
   }
@@ -91,7 +91,7 @@ public class UserController extends BaseController {
 
   @PreAuthorize("hasAnyRole('admin','hr')")
   @ApiOperation("用户列表")
-  @PostMapping("/list/{uids}")
+  @PostMapping("/list/")
   public List<User> selectList(@RequestBody List<Long> uids) {
     return userService.listByIds(uids);
   }
@@ -101,6 +101,13 @@ public class UserController extends BaseController {
   @GetMapping("/")
   public List<User> selectAll() {
     return userService.list();
+  }
+
+  @PreAuthorize("hasAnyRole('admin','hr')")
+  @ApiOperation("模糊查询")
+  @GetMapping("/like")
+  public List<User> selectUserLike(@RequestParam String truename) {
+    return userService.getOneLikeTruename(truename);
   }
 
   @PreAuthorize("hasAnyRole('admin','hr')")
