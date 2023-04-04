@@ -9,7 +9,7 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-public class BaseEntity {
+public abstract class BaseEntity {
     @TableId(type = IdType.AUTO)
     Long id; //
     @TableField(fill = FieldFill.INSERT)

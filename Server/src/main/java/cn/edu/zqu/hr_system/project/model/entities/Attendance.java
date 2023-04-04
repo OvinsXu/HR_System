@@ -7,14 +7,12 @@ import lombok.Data;
 @Data
 
 public class Attendance {
-  @TableId(type = IdType.AUTO)
-  Long id; //
-  Long uid; // 用户编号
-
-  int absence; // 缺勤天数
-  int leaves;//请假天数
-
-  int year;//年份
-  int month;//月份
+    @TableId(type = IdType.AUTO)
+    Long id; //
+    Long uid; // 用户编号
+    Integer absence; // 缺勤天数
+    Integer leaves;//请假天数
+    Integer year;//年份
+    Integer month;//月份
 }
 

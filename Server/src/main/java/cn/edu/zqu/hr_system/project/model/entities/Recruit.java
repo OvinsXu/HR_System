@@ -11,5 +11,5 @@ public class Recruit extends BaseEntity {
     String request;//'工作要求',
     String content;//'工作内容',
     String contact;// '联系方式',
-    int num;//'招聘人数',
+    Integer num;//'招聘人数',
 }
