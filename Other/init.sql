@@ -1,3 +1,4 @@
+# mysql -u admin -p hr < init.sql
 SET foreign_key_checks = 0;
 
 ### 【组织管理】
@@ -379,7 +380,8 @@ create or replace table recruit
         foreign key (update_by) references user (id)
 )
     comment '招聘信息表';
-INSERT INTO hr.recruit(pid,wage,details,request,content,contact,num,create_by,create_time,update_by,update_time)
+INSERT INTO hr.recruit(pid, wage, details, request, content, contact, num, create_by, create_time, update_by,
+                       update_time)
 VALUES (3, '8~13K',
         '薪资范围：8000-13000元/月<br/>
         底薪：5000元/月<br/>
@@ -395,8 +397,9 @@ VALUES (3, '8~13K',
         3、跟踪产品开发各环节（产品、UI、开发），并推动设计方案落实；<br/>
         4、制定并输出相关设计规范，和设计师默契配合，并推进落地。',
         '电话:111110000',
-        1, 3, '2022-01-01 00:00:00', 3,'2022-01-01 00:00:00');
-INSERT INTO hr.recruit(pid,wage,details,request,content,contact,num,create_by,create_time,update_by,update_time)
+        1, 3, '2022-01-01 00:00:00', 3, '2022-01-01 00:00:00');
+INSERT INTO hr.recruit(pid, wage, details, request, content, contact, num, create_by, create_time, update_by,
+                       update_time)
 VALUES (4, '10~13K',
         '薪资范围：10000-13000元/月<br/>
         社保类型：六险一金<br/>
@@ -410,8 +413,9 @@ VALUES (4, '10~13K',
         - 了解深度学习常用模型和算法，有大规模稀疏模型、预训练模型训练优化经验优先。<br/>
         - 有容器、K8S等云原生技术实践者优先。',
         '电话:111110000',
-        2, 3, '2022-01-01 00:00:00', 3,'2022-01-01 00:00:00');
-INSERT INTO hr.recruit(pid,wage,details,request,content,contact,num,create_by,create_time,update_by,update_time)
+        2, 3, '2022-01-01 00:00:00', 3, '2022-01-01 00:00:00');
+INSERT INTO hr.recruit(pid, wage, details, request, content, contact, num, create_by, create_time, update_by,
+                       update_time)
 VALUES (3, '8~13K',
         '薪资范围：8000-13000元/月<br/>
         底薪：5000元/月<br/>
@@ -431,7 +435,7 @@ VALUES (3, '8~13K',
         5、高效、积极、勤奋、爱分享<br/>
         6、热爱销售工作，进取心、责任心强，有强烈成功欲望和抗压能力',
         '电话:111110000',
-        0, 3, '2022-01-01 00:00:00', 3,'2022-01-01 00:00:00');
+        0, 3, '2022-01-01 00:00:00', 3, '2022-01-01 00:00:00');
 ### 【人才培养】
 create or replace table train
 (
@@ -499,31 +503,84 @@ INSERT INTO hr.skill (uid, name, status, begin_time, end_time, create_by, create
 VALUES (3, '普通话一甲证书', DEFAULT, '2020-01-01 00:00:00', '2025-01-01 00:00:00', 3, '2022-01-01 00:00:00', 3,
         '2022-01-01 00:00:00');
 ### 【考勤管理】
+create or replace table clocks
+(
+    id          int auto_increment
+        primary key,
+    uid         int unsigned not null comment '用户编号',
+
+    clockin     DATETIME     null comment '上班时间',
+    clockout    DATETIME     null comment '下班时间',
+
+    status      char(1)      not null comment '状态' default 'Y',
+
+    create_by   int          not null comment '创建者',
+    create_time datetime     not null comment '创建时间',
+    update_by   int          not null comment '更改者',
+    update_time datetime     not null comment '更改时间',
+
+    constraint clocks_id_uindex
+        unique (id),
+    constraint clocks_user_id_fk_c
+        foreign key (create_by) references user (id),
+    constraint clocks_user_id_fk_u
+        foreign key (update_by) references user (id),
+    constraint clocks_check_clockin#当天8~9点可以签到
+        check (clockin >= DATE_ADD(DATE(clockin), INTERVAL 8 Hour) and
+               clockin <= DATE_ADD(DATE(clockin), INTERVAL 9 Hour)),
+    constraint clocks_check_clockout#上班达到8小时,或者19点前可以打卡下班
+        check (clockout >= DATE_ADD(clockin, INTERVAL 9 Hour) and
+               clockout <= DATE_ADD(DATE(clockin), INTERVAL 19 Hour)),
+    constraint clocks_check_status
+        check (status = 'Y' OR status = 'N' OR status = 'H' OR status = 'A') #正常/异常/结半天/结全天
+)
+    comment '打卡记录表';
+INSERT INTO hr.clocks ( uid, clockin, clockout, create_by, create_time, update_by, update_time)
+VALUES ( 3, '2023-04-01 08:30:00.0', '2023-04-01 17:40:00.0', 1, '2023-04-01 08:30:00.0', 1,
+        '2023-04-01 08:30:00.0');
+INSERT INTO hr.clocks ( uid, clockin, clockout, status, create_by, create_time, update_by, update_time)
+VALUES ( 3, '2023-04-02 08:30:00.0', null, 'N', 1, '2023-04-02 08:30:00.0', 1, '2023-04-02 08:30:00.0');
+INSERT INTO hr.clocks ( uid, clockin, clockout, create_by, create_time, update_by, update_time)
+VALUES (5, '2023-04-01 08:30:00.0', '2023-04-01 17:40:00.0', 1, '2023-04-01 08:30:00.0', 1, '2023-04-01 08:30:00.0');
+INSERT INTO hr.clocks ( uid, clockin, clockout, create_by, create_time, update_by, update_time)
+VALUES ( 2, '2023-04-07 08:30:00.0', '2023-04-07 17:40:00.0', 1, '2023-04-07 08:30:00.0', 1, '2023-04-07 08:30:00.0');
+INSERT INTO hr.clocks ( uid, clockin, clockout, create_by, create_time, update_by, update_time)
+VALUES ( 2, '2023-04-08 08:30:00.0', '2023-04-08 17:40:00.0', 1, '2023-04-08 08:30:00.0', 1, '2023-04-08 08:30:00.0');
+
 create or replace table attendance
 (
-    id      int auto_increment
+    id          int auto_increment
         primary key,
-    uid     int unsigned not null comment '用户编号',
+    uid         int unsigned not null comment '用户编号',
 
 
-    absence int unsigned not null comment '缺勤天数' default 0,
-    leaves  int unsigned not null comment '请假天数' default 0,
+    absence     int unsigned not null comment '缺勤天数' default 0,
+    leaves      int unsigned not null comment '请假天数' default 0,
 
-    year    int unsigned not null comment '发放年份',
-    month   int unsigned not null comment '发放月份',
+    year        int unsigned not null comment '发放年份',
+    month       int unsigned not null comment '发放月份',
+
+    create_by   int          not null comment '创建者',
+    create_time datetime     not null comment '创建时间',
+    update_by   int          not null comment '更改者',
+    update_time datetime     not null comment '更改时间',
 
     constraint attendance_id_uindex
-        unique (id)
+        unique (id),
+    constraint attendance_user_id_fk_c
+        foreign key (create_by) references user (id),
+    constraint attendance_user_id_fk_u
+        foreign key (update_by) references user (id)
 )
     comment '考勤记录表';
-INSERT INTO hr.attendance (id, uid, absence, leaves, year, month)
-VALUES (1, 3, 1, 0, 2020, 1);
-INSERT INTO hr.attendance (id, uid, absence, leaves, year, month)
-VALUES (2, 3, 0, 2, 2020, 1);
-INSERT INTO hr.attendance (id, uid, absence, leaves, year, month)
-VALUES (3, 4, 1, 0, 2020, 1);
-INSERT INTO hr.attendance (id, uid, absence, leaves, year, month)
-VALUES (4, 5, 1, 0, 2020, 2);
+INSERT INTO hr.attendance (id, uid, absence, leaves, year, month, create_by, create_time, update_by, update_time)
+VALUES (1, 3, 1, 0, 2020, 1, 1, '2022-06-26 00:00:00.0', 1, '2022-06-26 00:00:00.0');
+INSERT INTO hr.attendance (id, uid, absence, leaves, year, month, create_by, create_time, update_by, update_time)
+VALUES (2, 3, 0, 2, 2020, 1, 1, '2022-06-26 00:00:00.0', 1, '2022-06-26 00:00:00.0');
+INSERT INTO hr.attendance (id, uid, absence, leaves, year, month, create_by, create_time, update_by, update_time)
+VALUES (3, 4, 1, 0, 2020, 1, 1, '2022-06-26 00:00:00.0', 1, '2022-06-26 00:00:00.0');
+INSERT INTO hr.attendance (id, uid, absence, leaves, year, month, create_by, create_time, update_by, update_time)
+VALUES (4, 5, 1, 0, 2020, 2, 1, '2022-06-26 00:00:00.0', 1, '2022-06-26 00:00:00.0');
 ### 【薪资管理】
 create or replace table wage
 (
@@ -543,16 +600,32 @@ create or replace table wage
     year         int unsigned not null comment '发放年份',
     month        int unsigned not null comment '发放月份',
 
+
+    create_by    int          not null comment '创建者',
+    create_time  datetime     not null comment '创建时间',
+    update_by    int          not null comment '更改者',
+    update_time  datetime     not null comment '更改时间',
+
     constraint wage_id_uindex
-        unique (id)
+        unique (id),
+    constraint wage_user_id_fk_c
+        foreign key (create_by) references user (id),
+    constraint wage_user_id_fk_u
+        foreign key (update_by) references user (id)
 )
     comment '工资记录表';
-INSERT INTO hr.wage (id, department, truename, id_card, base, bonus, pre_tax, post_tax, bonus_detail, year, month)
-VALUES (1, '人事部', '涛哥', '110004', 8000, 1000, 9000, 8000, '无', 2020, 1);
-INSERT INTO hr.wage (id, department, truename, id_card, base, bonus, pre_tax, post_tax, bonus_detail, year, month)
-VALUES (2, '人事部', '涛哥', '110004', 8000, 2000, 10000, 9000, '全勤奖+1000,', 2020, 1);
-INSERT INTO hr.wage (id, department, truename, id_card, base, bonus, pre_tax, post_tax, bonus_detail, year, month)
-VALUES (3, '人事部', '涛哥', '110004', 8000, 3000, 11000, 10000, '全勤奖+1000,绩效+1000', 2020, 2);
+INSERT INTO hr.wage (id, department, truename, id_card, base, bonus, pre_tax, post_tax, bonus_detail, year, month,
+                     create_by, create_time, update_by, update_time)
+VALUES (1, '人事部', '涛哥', '110004', 8000, 1000, 9000, 8000, '无', 2020, 1, 1, '2022-06-26 00:00:00.0', 1,
+        '2022-06-26 00:00:00.0');
+INSERT INTO hr.wage (id, department, truename, id_card, base, bonus, pre_tax, post_tax, bonus_detail, year, month,
+                     create_by, create_time, update_by, update_time)
+VALUES (2, '人事部', '涛哥', '110004', 8000, 2000, 10000, 9000, '全勤奖+1000,', 2020, 1, 1, '2022-06-26 00:00:00.0', 1,
+        '2022-06-26 00:00:00.0');
+INSERT INTO hr.wage (id, department, truename, id_card, base, bonus, pre_tax, post_tax, bonus_detail, year, month,
+                     create_by, create_time, update_by, update_time)
+VALUES (3, '人事部', '涛哥', '110004', 8000, 3000, 11000, 10000, '全勤奖+1000,绩效+1000', 2020, 2, 1,
+        '2022-06-26 00:00:00.0', 1, '2022-06-26 00:00:00.0');
 create or replace table bonus_type
 (
     id          int auto_increment

@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 
 @Component
@@ -27,9 +27,9 @@ public class MybatisPlusHandler implements MetaObjectHandler {
 
       //设置属性值
       this.setFieldValByName("createBy", id, metaObject);
-      this.setFieldValByName("createTime", new Date(System.currentTimeMillis()), metaObject);
+      this.setFieldValByName("createTime", LocalDateTime.now(), metaObject);
       this.setFieldValByName("updateBy", id, metaObject);
-      this.setFieldValByName("updateTime", new Date(System.currentTimeMillis()), metaObject);
+      this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
 
     }
 
@@ -45,7 +45,7 @@ public class MybatisPlusHandler implements MetaObjectHandler {
       UserInfo user = (UserInfo) authentication.getPrincipal();
       long id = user.getId();
       this.setFieldValByName("updateBy", id, metaObject);
-      this.setFieldValByName("updateTime", new Date(System.currentTimeMillis()), metaObject);
+      this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
     }
   }
 }

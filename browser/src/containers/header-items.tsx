@@ -69,9 +69,23 @@ const hrItems = [
     {
         key: `attendance`,
         icon: <ScheduleOutlined/>,
-        label: (
-            <Link to={"attendance"}>考勤管理</Link>
-        ),
+        label: "考勤管理",
+        children: [
+            {
+                key: `attendance.info`,
+                icon: <ProfileOutlined/>,
+                label: (
+                    <Link to={"attendance/other"}>其他</Link>
+                ),
+            },
+            {
+                key: `attendance.clock`,
+                icon: <NodeIndexOutlined/>,
+                label: (
+                    <Link to={"attendance/clock"}>打卡信息</Link>
+                ),
+            },
+        ]
     },
     {
         key: `devel`,

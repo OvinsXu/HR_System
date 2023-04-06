@@ -7,3 +7,13 @@ export interface AttendanceItem {
   year: number; // 时间
   month: number; // 时间
 }
+export interface ClockItem {
+  id: number; //
+  uid: number;
+  clockin: Date;
+  clockout: Date;
+
+  clockother: Date;
+  status: string;
+}
+

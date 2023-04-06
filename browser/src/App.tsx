@@ -8,13 +8,13 @@ import {store} from "./store";
 
 const App = () => {
   return (
-    <React.StrictMode>
+    // <React.StrictMode>
       <Provider store={store}>
         <div className="App">
           <RouterProvider router={router}/>
         </div>
       </Provider>
-    </React.StrictMode>
+    // </React.StrictMode>
   );
 }
 export default App;

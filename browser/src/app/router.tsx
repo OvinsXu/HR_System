@@ -20,6 +20,7 @@ import Wage from "../views/wage/Wage";
 import UserPost from "../views/user/UserPost";
 import UserOther from "../views/user/UserOther";
 import Skill from "../views/devel/Skill";
+import ClockInfo from "../views/attendance/ClockInfo";
 
 const router = createBrowserRouter([
     {path: "/login", element: <Login/>,},
@@ -35,7 +36,12 @@ const router = createBrowserRouter([
                 ],
             },
             {path: "org", element: <Org/>},
-            {path: "attendance", element: <Attendance/>,},
+            {
+                path: "attendance", children: [
+                    {path: "other",element: <Attendance/>,},
+                    {path: "clock",element: <ClockInfo/>,}
+                ]
+            },
             {
                 path: "devel", children: [
                     {path: "skill", element: <Skill/>,},
