@@ -143,11 +143,9 @@ const App: FC = () => {
       align: 'center',
       render: (item: any) => {
         const user = userList.find((i: any) => i.id === item)
-        // console.log("user")
-        // console.log(user.pid)
-        const post = postList.find((i: any) => i.id === user.pid)
-        // console.log("post")
-        // console.log(post)
+
+        const post = postList.find((i: any) => i.id === user?.pid)
+
         return post == null ? "无" : post.name
 
       }
