@@ -1,5 +1,5 @@
-import {FC,useState,useEffect} from "react";
-import {Col, Divider, Row} from "antd";
+import {FC, useEffect, useState} from "react";
+import {Divider} from "antd";
 import {RecruitItem} from "../model/recruit";
 import {getPostbyID} from "../api/org";
 

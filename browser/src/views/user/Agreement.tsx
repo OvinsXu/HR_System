@@ -1,23 +1,20 @@
 import React, {FC, useEffect, useState} from "react";
 import {
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Pagination,
-  PaginationProps,
-  Popconfirm,
-  Select,
-  Table,
-  Typography
+    Button,
+    Form,
+    Input,
+    InputNumber,
+    Pagination,
+    PaginationProps,
+    Popconfirm,
+    Select,
+    Table,
+    Typography
 } from "antd";
 import {EditableCellProps, IPage} from "../common";
-
-
 import moment from "moment";
-import {createAgreement, getAgreementPage, updateAgreement} from "../../api/agreement";
-import {AgreementItem} from "../../model/agreement";
-import {getUserList} from "../../api/user";
+import {createAgreement, getAgreementPage, getUserList, updateAgreement} from "../../api/user";
+import {AgreementItem} from "../../model/user";
 
 
 const App: FC = () => {
@@ -139,60 +136,25 @@ const App: FC = () => {
       editable: true,
 
     },
-    // {
-    //   title: '养老保险',
-    //   dataIndex: 'endowment',
-    //   key: 'endowment',
-    //   editable: true,
-    // },
-    // {
-    //   title: '医疗保险',
-    //   dataIndex: 'medical',
-    //   key: 'medical',
-    //   editable: true,
-    // },
-    // {
-    //   title: '失业保险',
-    //   dataIndex: 'unemployment',
-    //   key: 'unemployment',
-    //   editable: true,
-    // },
-    // {
-    //   title: '工伤保险',
-    //   dataIndex: 'employment',
-    //   key: 'employment',
-    //   editable: true,
-    // },
-    // {
-    //   title: '生育保险',
-    //   dataIndex: 'maternity',
-    //   key: 'maternity',
-    //   editable: true,
-    // },
     {
-      title: '五险金额(元)',
+      title: '社保金额(元)',
       dataIndex: 'insurance',
       key: 'insurance',
       editable: true,
-    },
-    {
-      title: '住房公积金(元)',
-      dataIndex: 'housingFund',
-      key: 'housingFund',
-      editable: true,
-
     },
     {
       title: '开始时间',
       dataIndex: 'beginTime',
       key: 'beginTime',
       editable: true,
+      render:(item:any)=>formatterTime(item)
     },
     {
       title: '结束时间',
       dataIndex: 'endTime',
       key: 'endTime',
       editable: true,
+      render:(item:any)=>formatterTime(item)
     },
     {
       title: '状态',
@@ -333,11 +295,9 @@ const App: FC = () => {
           <InputNumber placeholder={"基本工资(元)"} style={{width: 120}}/>
         </Form.Item>
         <Form.Item rules={ [{required:true,}]} name="insurance">
-          <InputNumber placeholder={"五险金额(元)"} style={{width: 120}}/>
+          <InputNumber placeholder={"社保金额(元)"} style={{width: 120}}/>
         </Form.Item>
-        <Form.Item rules={ [{required:true,}]} name="housingFund">
-          <InputNumber placeholder={"住房公积金(元)"} style={{width: 120}}/>
-        </Form.Item>
+        
         开始时间:<Form.Item rules={ [{required:true,}]} name="beginTime">
           <Input type={"date"}  style={{width: 150}}/>
         </Form.Item>

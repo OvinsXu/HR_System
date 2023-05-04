@@ -9,9 +9,8 @@ import java.time.LocalDateTime;
 
 public class Agreement extends BaseEntity {
     Long uid; // 用户编号
-    Integer wage; // 基本工资
-    Integer insurance;
-    Integer housingFund; // 住房公积金
+    Double wage; // 基本工资
+    Double insurance;
     LocalDateTime beginTime; // 开始时间
     LocalDateTime endTime; // 结束时间
     Character status; // 状态

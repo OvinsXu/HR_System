@@ -10,21 +10,22 @@ import {NotificationPlacement} from 'antd/lib/notification/interface';
 const App = () => {
   const navigate = useNavigate();
 
+  //点击登录时触发
   const onFinish = async (param: ILogin) => {
-    const user = await Login(param.username, param.password);
-
+    const user = await Login(param.username, param.password);//登陆请求
     if (user.status === 100) {
       sessionStorage.setItem("userinfo", JSON.stringify(user.data));
       if (param.remember) {
         localStorage.setItem("token", sessionStorage.getItem("token")!);
       }
-      //登陆后获取角色
-      const role = await getUserRole();
+      const role = await getUserRole();//登陆后获取角色
       if (role.status === 100) {
-        const userrole = role.data.map((arr: any)=>arr.authority.replace("ROLE_",""));
+        const userrole = role.data.map((arr: any)=>{
+            return arr.authority.replace("ROLE_","")
+        });
         sessionStorage.setItem("userrole", JSON.stringify(userrole));
       }
-      navigate("/");
+      navigate("/");//跳转到主页
     }else{
       openNotification('top')
     }

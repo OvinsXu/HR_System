@@ -3,8 +3,7 @@ import {Button, Col, Drawer, Row} from "antd";
 import RecruitInfo from "../../components/RecruitInfo";
 import {getAllRecruit} from "../../api/recruit";
 import {RecruitItem} from "../../model/recruit";
-import {PlusOutlined,SlidersOutlined} from "@ant-design/icons";
-import UserAdd from "../user/UserAdd";
+import {PlusOutlined, SlidersOutlined} from "@ant-design/icons";
 import RecruitAdd from "./RecruitAdd";
 import RecruitMgr from "./RecruitMgr";
 

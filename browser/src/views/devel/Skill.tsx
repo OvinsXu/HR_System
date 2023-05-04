@@ -7,8 +7,8 @@ import {EditableCellProps, IPage} from "../common";
 import {getPostList} from "../../api/org";
 
 import {getUserList} from "../../api/user";
-import {getSkillPage, updateSkill} from "../../api/skill";
-import {SkillItem} from "../../model/skill";
+import {eraseSkill, getSkillPage, updateSkill} from "../../api/devel";
+import {SkillItem} from "../../model/devel";
 
 
 const App: FC = () => {
@@ -23,6 +23,7 @@ const App: FC = () => {
 
   const [pList,setPList] = useState([] as any);//原工作岗位
   const [uList,setUList] = useState([] as any);//受理人
+  const [hasNew, setHasNew] = useState(false);
 
 
   useEffect(() => {
@@ -36,8 +37,9 @@ const App: FC = () => {
         console.log(res)
         setTotal(res.total)
         setData(res.records)
+        setHasNew(false)
       })
-  }, [pageNumber, pageSize])
+  }, [pageNumber, pageSize,hasNew])
 
   useEffect(()=>{
     if (data.length>0){
@@ -144,11 +146,13 @@ const App: FC = () => {
       title: '开始时间',
       dataIndex: 'beginTime',
       key: 'beginTime',
+      render:(item:any)=>formatterTime(item)
     },
     {
       title: '结束时间',
       dataIndex: 'endTime',
       key: 'endTime',
+      render:(item:any)=>formatterTime(item)
     },
     {
       title: '受理状态',
@@ -173,9 +177,14 @@ const App: FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link disabled={editingKey !== 0} onClick={() => edit(record)}>
-            编辑
-          </Typography.Link>
+          <span>
+            <Typography.Link disabled={editingKey !== 0} onClick={() => edit(record)} style={{ marginRight: 8 }}>
+              编辑
+            </Typography.Link>
+            <Typography.Link disabled={editingKey !== 0} onClick={() => deleteSkill(record.id!)}>
+              删除
+            </Typography.Link>
+          </span>
         );
       },
     },
@@ -241,12 +250,18 @@ const App: FC = () => {
       }),
     };
   });
-
+  
+  const deleteSkill = async (id: number) => {
+    await eraseSkill(id).then(() => {
+      setHasNew(true);
+    });
+  }
   return (
     <>
-      <h2>员工信息页</h2>
+      <h2>员工技能证书</h2>
       <Form form={form} component={false}>
         <Table components={{
+
           body: {
             cell: EditableCell,
           },

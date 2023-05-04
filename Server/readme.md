@@ -20,7 +20,7 @@ Spring boot已经有3.0版本，Spring Security也有了6.0版本。有空会考
         2. model
         3. service
             1. impl
-               4.utils
+        4.utils
 
 ## 接口说明
 
@@ -29,3 +29,7 @@ swagger : http://localhost:8080/swagger-ui/index.html
 ## 遇到過的問題
 
 null值不更新:https://juejin.cn/post/6971765090307538980
+
+业务问题:社保一般由公司和个人共同承当,个人交的社保一般在工资里扣,但是如果员工合理请假一个月,该月无工资,则公司应当帮忙交全部
+
+导出excel的问题:https://www.cnblogs.com/10134dz/p/14342503.html

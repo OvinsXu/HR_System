@@ -15,8 +15,8 @@ import {EditableCellProps, IPage} from "../common";
 
 
 import moment from "moment";
-import {createBonusType, getBonusTypePage, updateBonusType} from "../../api/bounstype";
-import {BonusTypeItem} from "../../model/bounstype";
+import {createBonusType, getBonusTypePage, updateBonusType} from "../../api/wage";
+import {BonusTypeItem} from "../../model/wage";
 
 
 const App: FC = () => {

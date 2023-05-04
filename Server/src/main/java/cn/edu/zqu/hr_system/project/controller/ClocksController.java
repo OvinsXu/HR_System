@@ -1,24 +1,32 @@
 package cn.edu.zqu.hr_system.project.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import cn.edu.zqu.hr_system.common.response.ResultData;
 import cn.edu.zqu.hr_system.framework.security.UserInfo;
 import cn.edu.zqu.hr_system.project.base.BaseController;
 import cn.edu.zqu.hr_system.project.model.entities.Clocks;
 import cn.edu.zqu.hr_system.project.model.enums.ResultCode;
 import cn.edu.zqu.hr_system.project.service.ClocksService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Api(tags = "打卡信息管理")
 @RestController
@@ -30,26 +38,29 @@ public class ClocksController extends BaseController {
   @ApiOperation("打卡")
   @PostMapping("/ding")
   public ResultData<Object> clock(@AuthenticationPrincipal UserInfo userInfo) {
-
     Long uid = userInfo.getId();
-    LocalDateTime localDateTime = LocalDateTime.now();
-
-    QueryWrapper queryWrapper = new QueryWrapper<Clocks>();
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime start = now.withHour(8).withMinute(0).withSecond(0).withNano(0);
+    LocalDateTime end = now.withHour(9).withMinute(0).withSecond(0).withNano(0);
+    QueryWrapper<Clocks> queryWrapper = new QueryWrapper<>();
     queryWrapper.eq("uid", uid);
-    queryWrapper.eq("Date(clockin)", localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    queryWrapper.eq("Date(clockin)", now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     Clocks clocks = clocksService.getOne(queryWrapper);
-
     if (clocks == null) {// 上班打卡
-      clocks = new Clocks();
-      clocks.setUid(uid);
-      clocks.setClockin(localDateTime);
-      return ResultData.success(clocksService.save(clocks));
-    } else if (Duration.between(clocks.getClockin(), localDateTime).toHours() > 8
-        && Duration.between(clocks.getClockin(), localDateTime).toHours() < 9) {// 可以正常打卡下班
-      clocks.setClockout(localDateTime);
+      if (now.isAfter(start) && now.isBefore(end)) {
+        clocks = new Clocks();
+        clocks.setUid(uid);
+        clocks.setClockin(now);
+        return ResultData.success(clocksService.save(clocks));
+      } else {
+        return ResultData.sendCode(ResultCode.RC203, "不在正常时间范围,打卡失败! 如有特殊情况,请联系人事!");
+      }
+    } else if (Duration.between(clocks.getClockin(), now).toHours() > 8
+        && Duration.between(clocks.getClockin(), now).toHours() < 9) {// 可以正常打卡下班
+      clocks.setClockout(now);
       return ResultData.success(clocksService.save(clocks));
     } else {// 打卡失败
-      return ResultData.sendCode(ResultCode.RC203,"不在正常时间范围,打卡失败! 如有特殊情况,请联系人事!");
+      return ResultData.sendCode(ResultCode.RC203, "你已经完成上班打卡!");
     }
   }
 

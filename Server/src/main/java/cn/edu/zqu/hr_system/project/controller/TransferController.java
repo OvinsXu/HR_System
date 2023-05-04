@@ -1,14 +1,26 @@
 package cn.edu.zqu.hr_system.project.controller;
 
-import cn.edu.zqu.hr_system.project.base.BaseController;
-import cn.edu.zqu.hr_system.project.model.entities.Transfer;
-import cn.edu.zqu.hr_system.project.service.TransferService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import cn.edu.zqu.hr_system.project.base.BaseController;
+import cn.edu.zqu.hr_system.project.model.entities.Transfer;
+import cn.edu.zqu.hr_system.project.model.entities.User;
+import cn.edu.zqu.hr_system.project.service.TransferService;
+import cn.edu.zqu.hr_system.project.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 
 @Api(tags = "调动申请管理")
@@ -17,7 +29,8 @@ import org.springframework.web.bind.annotation.*;
 public class TransferController extends BaseController {
   @Autowired
   private TransferService transferService;
-
+  @Autowired
+  private UserService userService;
 
   @ApiOperation("创建调动申请")
   @PostMapping
@@ -59,6 +72,11 @@ public class TransferController extends BaseController {
   @ApiOperation("更改调动申请")
   @PutMapping
   public String updateTransfer(@RequestBody Transfer transfer) {
+    if(transfer.getStatus()=='Y'){
+      User user = userService.getById(transfer.getUid());
+      user.setPid(transfer.getPid());
+      userService.saveOrUpdate(user);
+    }
     return Result(transferService.updateById(transfer));
   }
 

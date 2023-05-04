@@ -1,11 +1,15 @@
 import {
     Cascader,
-    Col, Form,
+    Col,
+    Form,
     Pagination,
-    PaginationProps, Popconfirm,
+    PaginationProps,
+    Popconfirm,
     Radio,
-    Row, Select,
-    Table, Typography,
+    Row,
+    Select,
+    Table,
+    Typography,
 } from "antd";
 import React, {FC, useEffect, useState} from "react";
 import moment from 'moment';
@@ -181,10 +185,10 @@ const App: FC = () => {
                         return "正常"
                     case "N":
                         return <div style={{color: 'red'}}>异常</div>
-                    case "H":
-                        return <p style={{color: 'green'}}>结半天</p>
-                    case "A":
-                        return <p style={{color: 'gold'}}>结一天</p>
+                    case "P":
+                        return <p style={{color: 'green'}}>补卡</p>
+                    case "L":
+                        return <p style={{color: 'blue'}}>缺勤</p>
                 }
             }
         },
@@ -218,8 +222,8 @@ const App: FC = () => {
             case 'status':
                 inputNode = <Select options={[
                     {key: "N", label: "异常", value: "N"},
-                    {key: "H", label: "结半天", value: "H"},
-                    {key: "A", label: "结一天", value: "A"},
+                    {key: "P", label: "补卡", value: "P"},
+                    {key: "L", label: "缺勤", value: "L"},
                 ]}></Select>
                 break;
         }

@@ -36,7 +36,6 @@ public class PostController extends BaseController {
   @ApiOperation("通过编号查找岗位")
   @GetMapping("/{pid}")
   public Post findPostById(@PathVariable long pid) {
-    System.out.println("查找岗位编号:" + pid);
     return postService.getById(pid);
   }
 

@@ -1,16 +1,16 @@
 import {
-  Button,
-  Col,
-  Drawer,
-  Form,
-  Input,
-  Pagination,
-  PaginationProps,
-  Popconfirm,
-  Row,
-  Select,
-  Table,
-  Typography
+    Button,
+    Col,
+    Drawer,
+    Form,
+    Input,
+    Pagination,
+    PaginationProps,
+    Popconfirm,
+    Row,
+    Select,
+    Table,
+    Typography
 } from "antd";
 import React, {FC, useEffect, useState} from "react";
 import {eraseUser, getUserPage, updateUser} from "../../api/user";

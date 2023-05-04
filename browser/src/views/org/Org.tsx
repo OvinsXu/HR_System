@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {OrganizationTreeGraph} from '@ant-design/charts';
+import React, { useEffect, useState } from 'react';
+import { OrganizationTreeGraph } from '@ant-design/charts';
 
-import {Button, Col, Drawer, Row} from 'antd';
+import { Button, Col, Drawer, Row } from 'antd';
 import DeptMgr from "./DeptMgr";
 import PostMgr from './PostMgr';
-import {getAllDept, getAllPost} from "../../api/org";
-import {PostItem} from "../../model/org";
-import {PlusOutlined} from "@ant-design/icons";
+import { getAllDept, getAllPost } from "../../api/org";
+import { PostItem } from "../../model/org";
 
 const App: React.FC = () => {
 
@@ -55,21 +54,20 @@ const App: React.FC = () => {
       findSubOrg(org, resData);
       setData(org);
     });
-  }, [post,open]);
+  }, [post, open]);
 
 
   /**
    * 遍历树
    */
-  const traverseTree = <T extends { children?: T[] }>(data: T, fn: (param: T) => boolean) => {
+  const traverseTree = <T extends { children?: T[] }>
+    (data: T, fn: (param: T) => boolean) => {
     if (typeof fn !== 'function') {
       return;
     }
-
     if (!fn(data)) {
       return false;
     }
-
     if (data && data.children) {
       for (let i = data.children.length - 1; i >= 0; i--) {
         if (!traverseTree(data.children[i], fn)) return false;
@@ -77,7 +75,6 @@ const App: React.FC = () => {
     }
     return true;
   };
-
   traverseTree((data as any), (d: any) => {
     d.leftIcon = {
       style: {
@@ -127,15 +124,15 @@ const App: React.FC = () => {
       </Row>
       <Row justify="center">
         <OrganizationTreeGraph data={data} nodeType='rect'
-                               width={1000} height={400} style={{border: '1px solid green', margin: 20}}
-                               nodeSize={[80, 30]}
+          width={1000} height={400} style={{ border: '1px solid green', margin: 20 }}
+          nodeSize={[80, 30]}
           //nodeLabelCfg={{style:{fontSize:1}}}
-                               collapseExpand={true}   //折叠子节点
-                               nodeStateStyles={nodeStateStyles} //节点状态样式
-                               handleNodeClick={handleNodeClick} //点击节点的回调函数
-                               handleCanvasClick={handleCanvasClick} //点击画板背景的回调函数
-          //enableEdit={true}   //是否可编辑
-          //minimapCfg = {{ show: true}}  //显示导航小视图
+          collapseExpand={true}   //折叠子节点
+          nodeStateStyles={nodeStateStyles} //节点状态样式
+          handleNodeClick={handleNodeClick} //点击节点的回调函数
+          handleCanvasClick={handleCanvasClick} //点击画板背景的回调函数
+        //enableEdit={true}   //是否可编辑
+        //minimapCfg = {{ show: true}}  //显示导航小视图
         />
       </Row>
       <Row justify="center" style={{ margin: 10 }}>
@@ -148,18 +145,18 @@ const App: React.FC = () => {
         width={800}
         onClose={() => setOpen('')}
         open={open === 'dept'}
-        bodyStyle={{paddingBottom: 80}}
+        bodyStyle={{ paddingBottom: 80 }}
       >
-        <DeptMgr/>
+        <DeptMgr />
       </Drawer>
       <Drawer
         title="岗位详情"
-        width={1200}
+        width={1000}
         onClose={() => setOpen('')}
         open={open === 'post'}
-        bodyStyle={{paddingBottom: 80}}
+        bodyStyle={{ paddingBottom: 80 }}
       >
-        <PostMgr/>
+        <PostMgr />
       </Drawer>
 
     </>

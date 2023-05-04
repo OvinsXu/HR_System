@@ -1,15 +1,15 @@
 import React from "react";
-import {AuditOutlined} from "@ant-design/icons";
+import {PayCircleOutlined, ProjectOutlined} from "@ant-design/icons";
 
 const userItems = [
   {
     key: `clockin`,
-    icon: React.createElement(AuditOutlined),
+    icon: React.createElement(ProjectOutlined),
     label: `上班打卡`,
   },
   {
     key: `clockout`,
-    icon: React.createElement(AuditOutlined),
+    icon: React.createElement(PayCircleOutlined),
     label: `下班打卡`,
   },
   // {

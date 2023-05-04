@@ -1,10 +1,10 @@
-import React, { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Button, Col, Form, Input, InputNumber, message, Row, Select } from "antd";
+import React, {Dispatch, FC, SetStateAction, useEffect, useState} from "react";
+import {Button, Col, Form, Input, InputNumber, message, Row, Select} from "antd";
 
 import TextArea from "antd/es/input/TextArea";
-import { createRecruit } from "../../api/recruit";
-import { getAllPost } from "../../api/org";
-import { PostItem } from "../../model/org";
+import {createRecruit} from "../../api/recruit";
+import {getAllPost} from "../../api/org";
+import {PostItem} from "../../model/org";
 
 interface PropsType {
   onClose: () => void;

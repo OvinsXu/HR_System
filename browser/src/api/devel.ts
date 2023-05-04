@@ -1,23 +1,11 @@
-// import {ILogin, UserItem} from "./user";
-//
 import axiosInstance from "../app/http";
 import {IPage} from "../views/common";
-import {TrainItem} from "../model/train";
-//
+import {SkillItem, TrainItem} from "../model/devel";
+
+
 export const createTrain = async (user: TrainItem) => {
   return await axiosInstance.post("/train/",user).then(res => res);
 }
-//
-//
-// /**
-//  * @description: 用户登录
-//  */
-// export const Login = async (username: any, password: any) => {
-//   return await axiosInstance.post('/user/login', {username:username,password:password}).then(res => res);
-// };
-
-
-
 
 /**
  * 获取用户分页
@@ -39,5 +27,23 @@ export const updateTrain = async (params: TrainItem) => {
   return await axiosInstance.put("/train/", params).then(res => res);
 }
 
+export const createSkill = async (agreement: any) => {
+  return await axiosInstance.post("/skill/",agreement).then(res => res);
+}
+
+export const getSkillPage = async (params: IPage) => {
+  return await axiosInstance.get("/skill/page", {params: params}).then(res => res.data);
+}
+
+export const updateSkill = async (params: SkillItem) => {
+  return await axiosInstance.put("/skill/", params).then(res => res);
+}
+
+export const getSkill = async (uid:number) => {
+  return await axiosInstance.get("/skill/"+uid).then(res=>res);
+}
 
 
+export const eraseSkill= async (pid:number) => {
+  return await axiosInstance.delete("/skill/"+pid).then(res => res.data);
+}

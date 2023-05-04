@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router-dom";
+import {createBrowserRouter, createHashRouter} from "react-router-dom";
 import Home from "../pages/Home";
 import System from "../views/system/System";
 import Department from "../views/org/DeptMgr";
@@ -9,20 +9,22 @@ import OperateLog from "../views/system/OperateLog";
 import LoginLog from "../views/system/LoginLog";
 import Auth from "../views/system/Auth";
 import FileSys from "../views/system/FileSys";
-
 import Attendance from "../views/attendance/Attendance";
-
 import Train from "../views/devel/Train";
 import Org from "../views/org/Org";
-import Perf from "../views/perf/Perf";
 import Recruit from "../views/recruit/Recruit";
 import Wage from "../views/wage/Wage";
 import UserPost from "../views/user/UserPost";
-import UserOther from "../views/user/UserOther";
+import UserOther from "../views/user/Agreement";
 import Skill from "../views/devel/Skill";
 import ClockInfo from "../views/attendance/ClockInfo";
+import Bonus from "../views/wage/Bonus";
+import Leaves from "../views/attendance/Leaves";
+import SelfInfo from "../views/user/SelfInfo";
+import Agreement from "../views/user/Agreement";
 
-const router = createBrowserRouter([
+//const router = createBrowserRouter([
+const router = createHashRouter([
     {path: "/login", element: <Login/>,},
     {
         path: "/", element: <Home/>,
@@ -32,14 +34,16 @@ const router = createBrowserRouter([
                 children: [
                     {path: "info", element: <UserInfo/>,},
                     {path: "post", element: <UserPost/>,},
-                    {path: "other", element: <UserOther/>,},
+                    {path: "agreement", element: <Agreement/>,},
+                    {path: "self", element: <SelfInfo/>,},
                 ],
             },
             {path: "org", element: <Org/>},
             {
                 path: "attendance", children: [
-                    {path: "other",element: <Attendance/>,},
-                    {path: "clock",element: <ClockInfo/>,}
+                    {path: "leaves", element: <Leaves/>,},
+                    {path: "info", element: <Attendance/>,},
+                    {path: "clock", element: <ClockInfo/>,}
                 ]
             },
             {
@@ -48,8 +52,13 @@ const router = createBrowserRouter([
                     {path: "train", element: <Train/>,},
                 ]
             },
-            {path: "perf", element: <Perf/>,},
-            {path: "wage", element: <Wage/>},
+
+            {
+                path: "wage", children: [
+                    {path: "count", element: <Wage/>,},
+                    {path: "bonus", element: <Bonus/>,},
+                ]
+            },
             {path: "recruit", element: <Recruit/>},
             {
                 path: "system", element: <System/>,

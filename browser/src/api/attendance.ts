@@ -2,15 +2,70 @@
 //
 import axiosInstance from "../app/http";
 import {IPage} from "../views/common";
-import {AttendanceItem, ClockItem} from "../model/attendance";
+import {AttendanceItem, ClockItem, LeavesItem, LeavesTypeItem} from "../model/attendance";
 //
+
+
+export const createLeavesType = async (user: LeavesTypeItem) => {
+  return await axiosInstance.post("/leavestype/",user).then(res => res);
+}
+
+
+export const getLeavesTypePage = async (params: IPage) => {
+  return await axiosInstance.get("/leavestype/page", {params: params}).then(res => res.data);
+}
+export const getLeavesTypePageByStatus = async (params: any) => {
+  return await axiosInstance.get("/leavestype/page/status", {params: params}).then(res => res.data);
+}
+export const getLeavesTypebyID = async (params: number) => {
+  return await axiosInstance.get("/leavestype/" + params).then(res => res.data);
+}
+export const getLeavesTypeList= async (params: number[]) => {
+  return await axiosInstance.post("/leavestype/list/{pids}" , params).then(res => res.data);
+}
+
+export const updateLeavesType = async (params: LeavesTypeItem) => {
+  return await axiosInstance.put("/leavestype/", params).then(res => res);
+}
+
+
+export const getLeavesType = async () => {
+  return await axiosInstance.get("/leavestype/").then(res=>res);
+}
+
+//////////////////////////////////////////////////////////
+
+export const createLeaves = async (user: LeavesItem) => {
+  return await axiosInstance.post("/leaves/",user).then(res => res);
+}
+
+export const getLeavesPage = async (params: IPage) => {
+  return await axiosInstance.get("/leaves/page", {params: params}).then(res => res.data);
+}
+export const getLeavesAllType = async () => {
+  return await axiosInstance.get("/leaves/type").then(res => res.data);
+}
+
+export const getLeavesPageByStatus = async (params: any) => {
+  return await axiosInstance.get("/leaves/page/timestatus", {params: params}).then(res => res.data);
+}
+export const getLeavesbyID = async (params: number) => {
+  return await axiosInstance.get("/leaves/" + params).then(res => res.data);
+}
+
+export const updateLeaves = async (params: LeavesItem) => {
+  return await axiosInstance.put("/leaves/", params).then(res => res);
+}
+
+export const eraseLeaves= async (pid:number) => {
+  return await axiosInstance.delete("/leaves/"+pid).then(res => res.data);
+}
+
+/////////////////////////////////////////////////////////////
 export const createAttendance = async (user: AttendanceItem) => {
   return await axiosInstance.post("/attendance/",user).then(res => res);
 }
 
-/**
- * 获取用户分页
- */
 export const getAttendancePage = async (params: IPage) => {
   return await axiosInstance.get("/attendance/page", {params: params}).then(res => res.data);
 }

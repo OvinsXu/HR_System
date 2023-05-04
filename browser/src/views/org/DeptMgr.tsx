@@ -17,7 +17,7 @@ const App: FC = () => {
 
     const [data, setData] = useState([] as Array<DeptItem>); //表格当前分页数据
 
-    const [newDept, setNewDept] = useState({status: 'Y'} as DeptItem); //新建部门
+    const [newDept, setNewDept] = useState({ status: 'Y' } as DeptItem); //新建部门
 
     const [mgrUser, setMgrUser] = useState([] as Array<UserItem>);//当前页需要的部门主管信息
 
@@ -57,7 +57,7 @@ const App: FC = () => {
     const isEditing = (record: DeptItem) => record.id === editingKey;
 
     const edit = (record: Partial<DeptItem>) => {
-        form.setFieldsValue({...record});
+        form.setFieldsValue({ ...record });
         setEditingKey(record.id!);
     };
 
@@ -153,13 +153,13 @@ const App: FC = () => {
                 const editable = isEditing(record as DeptItem);
                 return editable ? (
                     <span>
-            <Typography.Link onClick={() => save(record.id!)} style={{marginRight: 8}}>
-              保存
-            </Typography.Link>
-            <Popconfirm title="确定取消?" cancelText={'取消'} okText={'确认'} onConfirm={cancel}>
-              <a>取消</a>
-            </Popconfirm>
-          </span>
+                        <Typography.Link onClick={() => save(record.id!)} style={{ marginRight: 8 }}>
+                            保存
+                        </Typography.Link>
+                        <Popconfirm title="确定取消?" cancelText={'取消'} okText={'确认'} onConfirm={cancel}>
+                            <a>取消</a>
+                        </Popconfirm>
+                    </span>
                 ) : (
                     <Typography.Link disabled={editingKey !== 0} onClick={() => edit(record)}>
                         编辑
@@ -188,34 +188,34 @@ const App: FC = () => {
     }, []);
 
     const EditableCell: React.FC<EditableCellProps> = ({
-                                                           editing,
-                                                           dataIndex,
-                                                           title,
-                                                           inputType,
-                                                           record,
-                                                           index,
-                                                           children,
-                                                           ...restProps
-                                                       }) => {
+        editing,
+        dataIndex,
+        title,
+        inputType,
+        record,
+        index,
+        children,
+        ...restProps
+    }) => {
         let inputNode;
 
         switch (dataIndex) {
             case 'uid':
                 inputNode =
-                    <Select style={{width: 120}} showSearch placeholder="姓名搜索"
-                            onSearch={debounceFetcher}
-                            defaultOpen={openSelect}
-                            onSelect={() => {
-                                setOpenSelect(false);
-                            }}
-                            options={
-                                searchUserList.map((item) => {
-                                    return {key: item.id, value: item.id, label: item.truename}
-                                })}>
+                    <Select style={{ width: 120 }} showSearch placeholder="姓名搜索"
+                        onSearch={debounceFetcher}
+                        defaultOpen={openSelect}
+                        onSelect={() => {
+                            setOpenSelect(false);
+                        }}
+                        options={
+                            searchUserList.map((item) => {
+                                return { key: item.id, value: item.id, label: item.truename }
+                            })}>
                     </Select>
                 break;
             case 'did':
-                inputNode = <Select style={{width: 120}}>
+                inputNode = <Select style={{ width: 120 }}>
                     <option value={undefined}>{'无'}</option>
                     {
                         data.map((item) => {
@@ -227,21 +227,21 @@ const App: FC = () => {
                 </Select>
                 break;
             case 'status':
-                inputNode = <Select style={{width: 120}}>
+                inputNode = <Select style={{ width: 120 }}>
                     <option key={1} value={'Y'}>{"启用"}</option>
                     <option key={2} value={'N'}>{"停用"}</option>
                     <option key={3} value={'D'}>{"删除"}</option>
                 </Select>
                 break;
             default:
-                inputNode = <Input/>;
+                inputNode = <Input />;
         }
 
         return (
             <td {...restProps}>
 
                 {editing ? (
-                    <Form.Item name={dataIndex} style={{margin: 0}}>
+                    <Form.Item name={dataIndex} style={{ margin: 0 }}>
                         {inputNode}
                     </Form.Item>
                 ) : (
@@ -269,7 +269,7 @@ const App: FC = () => {
 
     const btnAddOnClick = () => {
         createDept(newDept).then((res) => {
-            setNewDept({status:'Y'} as DeptItem)
+            setNewDept({ status: 'Y' } as DeptItem)
             setHasNew(true)
         })
     }
@@ -280,14 +280,14 @@ const App: FC = () => {
             <Form form={form} component={false}>
                 <Row>
                     <Col><Input onChange={(e) => {
-                        setNewDept({...newDept, name: e.target.value});
+                        setNewDept({ ...newDept, name: e.target.value });
 
-                    }} placeholder={"部门名称"} style={{width: 150}}/></Col>
+                    }} placeholder={"部门名称"} style={{ width: 150 }} /></Col>
                     <Col>
                         <Select onChange={(e) => {
-                            setNewDept({...newDept, did: e});
+                            setNewDept({ ...newDept, did: e });
 
-                        }} placeholder={"所属部门"} style={{width: 100}}>
+                        }} placeholder={"所属部门"} style={{ width: 100 }}>
                             <option value={undefined}>{'无'}</option>
                             {
                                 data.map((item) => {
@@ -297,18 +297,18 @@ const App: FC = () => {
                         </Select>
                     </Col>
                     <Col>
-                        <Select style={{width: 120}} showSearch placeholder="部门主管"
-                                onSearch={debounceFetcher}
-                                defaultOpen={openSelect}
-                                onSelect={(e) => {
-                                    setNewDept({...newDept, uid: e});
-                                    setOpenSelect(false);
-                                }}
-                                options={
-                                    searchUserList.map((item) => {
-                                            return {key: item.id, value: item.id, label: item.truename}
-                                        }
-                                    )}>
+                        <Select style={{ width: 120 }} showSearch placeholder="部门主管"
+                            onSearch={debounceFetcher}
+                            defaultOpen={openSelect}
+                            onSelect={(e) => {
+                                setNewDept({ ...newDept, uid: e });
+                                setOpenSelect(false);
+                            }}
+                            options={
+                                searchUserList.map((item) => {
+                                    return { key: item.id, value: item.id, label: item.truename }
+                                }
+                                )}>
                         </Select>
                     </Col>
                     <Col><Button type={"primary"} onClick={btnAddOnClick}>新建</Button></Col>
@@ -319,10 +319,10 @@ const App: FC = () => {
                         cell: EditableCell,
                     },
                 }} size={'middle'} columns={mergedColumns} rowClassName="editable-row" dataSource={data}
-                       pagination={false}
-                       bordered/>
+                    pagination={false}
+                    bordered />
             </Form>
-            <Pagination hideOnSinglePage showQuickJumper defaultCurrent={1} total={total} onChange={onChange}/>
+            <Pagination hideOnSinglePage showQuickJumper defaultCurrent={1} total={total} onChange={onChange} />
         </>
     );
 }

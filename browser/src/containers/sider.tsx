@@ -1,18 +1,22 @@
-import React, { FC } from "react";
-import { Image, Menu } from "antd";
+import React, {FC} from "react";
+import {Image, Menu} from "antd";
 import LoginInfo from "../components/LoginInfo";
 import Sider from "antd/es/layout/Sider";
-import { userItems } from "./sider-items";
-import { clockDing } from "../api/attendance";
+import {userItems} from "./sider-items";
+import {clockDing} from "../api/attendance";
 import notification from 'antd/lib/notification';
-import { NotificationPlacement } from "antd/es/notification/interface";
+import {NotificationPlacement} from "antd/es/notification/interface";
+import ClocksTar from "../components/ClocksTar";
+import LeavesTar from "../components/LeavesTar";
 
 
 const App: FC = () => {
 
   const onClick = (key: string) => {
     clockDing().then((res) => {
-      if (res.status === 203) {
+      console.log('res');
+      console.log(res);
+      if (res.status != 200) {
         openNotification('top',"打卡失败",res.data)
       }
     })
@@ -29,19 +33,15 @@ const App: FC = () => {
   }
 
   return (
-    <>
+    <div>
       {contextHolder}
-      <Sider style={{ backgroundColor: "white" }} className="site-layout-background" width={200}>
+      <Sider style={{height:"100%", backgroundColor: "white"}} className="site-layout-background" width={200}>
         <Image src='./logo.png' preview={false} />
         <LoginInfo />
-        <Menu
-          mode="inline"
-          items={userItems}
-          selectable={false}
-          onClick={(e) => onClick(e.key)}
-        />
+        <ClocksTar/>
+        <LeavesTar/>
       </Sider>
-    </>
+    </div>
   );
 }
 

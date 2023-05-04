@@ -1,16 +1,16 @@
 import {
-  Button,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Pagination,
-  PaginationProps,
-  Popconfirm,
-  Row,
-  Select,
-  Table,
-  Typography
+    Button,
+    Col,
+    Form,
+    Input,
+    InputNumber,
+    Pagination,
+    PaginationProps,
+    Popconfirm,
+    Row,
+    Select,
+    Table,
+    Typography
 } from "antd";
 import React, {FC, useEffect, useState} from "react";
 import "../system/System.module.css"

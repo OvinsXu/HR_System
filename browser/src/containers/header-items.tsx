@@ -18,10 +18,20 @@ import {
 
 const userItems = [
     {
-        key: `common`,
-        icon: <MehOutlined/>,
-        label: "普通用户",
+        key: `common.info`,
+        icon: <TeamOutlined/>,
+        label: <Link to={"user/self"}>信息管理</Link>
     },
+    // {
+    //     key: `common.leave`,
+    //     icon: <ProfileOutlined/>,
+    //     label: "请假管理",
+    // },
+    // {
+    //     key: `common.attendance`,
+    //     icon: <ScheduleOutlined/>,
+    //     label: "查看考勤",
+    // },
 ];
 const adminItems = [
     {
@@ -51,10 +61,10 @@ const hrItems = [
                 ),
             },
             {
-                key: `user.other`,
+                key: `user.agreement`,
                 icon: <EllipsisOutlined/>,
                 label: (
-                    <Link to={"user/other"}>其他事项</Link>
+                    <Link to={"user/agreement"}>合同信息</Link>
                 ),
             },
         ]
@@ -72,10 +82,17 @@ const hrItems = [
         label: "考勤管理",
         children: [
             {
+                key: `attendance.leaves`,
+                icon: <ProfileOutlined/>,
+                label: (
+                    <Link to={"attendance/leaves"}>请假管理</Link>
+                ),
+            },
+            {
                 key: `attendance.info`,
                 icon: <ProfileOutlined/>,
                 label: (
-                    <Link to={"attendance/other"}>其他</Link>
+                    <Link to={"attendance/info"}>考勤情况</Link>
                 ),
             },
             {
@@ -108,19 +125,28 @@ const hrItems = [
             },
         ]
     },
-    {
-        key: 'perf',
-        icon: <TrophyOutlined/>,
-        label: (
-            <Link to={"perf"}>绩效管理</Link>
-        )
-    },
+
     {
         key: 'wage',
         icon: <MoneyCollectOutlined/>,
-        label: (
-            <Link to={"wage"}>薪资管理</Link>
-        )
+        label:'薪资管理',
+        children: [
+            {
+                key: 'wage.bonus',
+                icon: <TrophyOutlined/>,
+                label: (
+                    <Link to={"wage/bonus"}>绩效奖金</Link>
+                )
+            },
+            {
+                key: 'wage.count',
+                icon: <TrophyOutlined/>,
+                label: (
+                    <Link to={"wage/count"}>薪资核算</Link>
+                )
+            },
+        ],
+
     },
     {
         key: 'recruit',

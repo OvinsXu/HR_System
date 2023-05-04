@@ -1,23 +1,10 @@
-import {
-  Button,
-  Col,
-  Drawer,
-  Form,
-  Input, InputNumber,
-  Pagination,
-  PaginationProps,
-  Popconfirm,
-  Row,
-  Select,
-  Table,
-  Typography
-} from "antd";
+import {Form, Input, InputNumber, Pagination, PaginationProps, Popconfirm, Select, Table, Typography} from "antd";
 import React, {FC, useEffect, useState} from "react";
 import {eraseRecruit, getRecruitPage, updateRecruit} from "../../api/recruit";
 import {RecruitItem} from "../../model/recruit";
 import "../system/System.module.css"
 import {EditableCellProps, IPage} from "../common";
-import {getAllPost, getPostList} from "../../api/org";
+import {getAllPost} from "../../api/org";
 import TextArea from "antd/es/input/TextArea";
 
 

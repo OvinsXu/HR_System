@@ -16,9 +16,10 @@ import React, {FC, useEffect, useState} from "react";
 import moment from "moment";
 import {EditableCellProps, IPage} from "../common";
 import {getPostList} from "../../api/org";
-import {TransferItem} from "../../model/transfer";
-import {createTransfer, getTransferPage, updateTransfer} from "../../api/transfer";
-import {getUserList} from "../../api/user";
+
+
+import {createTransfer, eraseTransfer, getTransferPage, getUserList, updateTransfer} from "../../api/user";
+import {TransferItem} from "../../model/user";
 
 
 const App: FC = () => {
@@ -102,7 +103,10 @@ const App: FC = () => {
           ...row,
         }
         //newRow.roleId = roles.find()
-        updateTransfer(newRow);
+        updateTransfer(newRow).then((res)=>{
+          console.log(res);
+          
+        });
         //console.log(newRow);
         newData.splice(index, 1, newRow);
         setData(newData);
@@ -187,14 +191,24 @@ const App: FC = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link disabled={editingKey !== 0} onClick={() => edit(record)}>
-            编辑
-          </Typography.Link>
+          <span>
+            <Typography.Link disabled={editingKey !== 0} onClick={() => edit(record)} style={{ marginRight: 8 }}>
+              编辑
+            </Typography.Link>
+            <Typography.Link disabled={editingKey !== 0} onClick={() => deleteBonus(record.id!)}>
+              删除
+            </Typography.Link>
+          </span>
         );
       },
     },
 
   ];
+  const deleteBonus = async (id: number) => {
+    await eraseTransfer(id).then(() => {
+      setNewFlag(newFlag + 1)
+    });
+  }
 
   const EditableCell: React.FC<EditableCellProps> = ({
                                                        editing,
@@ -261,7 +275,7 @@ const App: FC = () => {
   });
 
   const onFinish = (values: any) => {
-    values.status = "Y";
+    values.status = "N";
     console.log(values)
     createTransfer(values).then(res => {
       setNewFlag(newFlag + 1)

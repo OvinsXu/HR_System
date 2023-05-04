@@ -1,9 +1,8 @@
 export interface AttendanceItem {
   id: number; //
   uid: number;
-  absence: number; // 缺勤天数
-  leaves: number;//请假天数
-
+  leaves: number; // 缺勤假
+  holiday: number; //带薪假
   year: number; // 时间
   month: number; // 时间
 }
@@ -17,3 +16,16 @@ export interface ClockItem {
   status: string;
 }
 
+export interface LeavesTypeItem {
+  name: string;
+}
+
+export interface LeavesItem {
+  id: number; 
+  uid: number;
+  hid: number;
+  beginDate: Date;
+  endDate: Date;
+  details: string;
+  status: string;
+}

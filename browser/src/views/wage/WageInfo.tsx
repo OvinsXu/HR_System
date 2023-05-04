@@ -69,7 +69,6 @@ const App: FC = () => {
   }, [select,pageNumber, pageSize]);
 
   const selectOnChange = (value: any) => {
-    //console.log(value);
     setSelect({
       year:Number(value[0]),
       month:Number(value[1])
